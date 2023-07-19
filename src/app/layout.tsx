@@ -1,6 +1,14 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { NextAuthProvider, TrpcProvider } from "./providers";
+import {
+  AuthProvider,
+  ThemeProvider,
+  TrpcProvider,
+} from "@/components/providers";
+import { cn } from "@/lib/utils";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +24,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextAuthProvider>
-          <TrpcProvider>{children}</TrpcProvider>
-        </NextAuthProvider>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          inter.className
+        )}
+      >
+        <AuthProvider>
+          <TrpcProvider>
+            <ThemeProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <SiteHeader />
+                <div className="flex flex-1">{children}</div>
+                <SiteFooter />
+              </div>
+              <TailwindIndicator />
+            </ThemeProvider>
+          </TrpcProvider>
+        </AuthProvider>
       </body>
     </html>
   );

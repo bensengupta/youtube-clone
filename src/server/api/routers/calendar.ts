@@ -1,7 +1,7 @@
 import { parseISO } from "date-fns";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { type Calendar } from "~/ts/types";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { type Calendar } from "@/ts/types";
 
 const calendar1: Calendar = {
   id: "calendar-1",

@@ -1,6 +1,6 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+import { api } from "@/utils/api";
 
 export default function AuthShowcase() {
   const { data: sessionData } = useSession();
