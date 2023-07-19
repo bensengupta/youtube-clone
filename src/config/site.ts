@@ -1,4 +1,4 @@
-import { Icons } from "@/components/icons";
+import { type Icons } from "@/components/icons";
 
 export const siteConfig = {
   name: "youtube-clone",
@@ -7,7 +7,7 @@ export const siteConfig = {
   description: "Modern youtube clone.",
   links: {
     personalGithub: "https://github.com/bensengupta",
-    github: "https://github.com/bensengupta",
+    github: "https://github.com/bensengupta/youtube-clone",
   },
 };
 
