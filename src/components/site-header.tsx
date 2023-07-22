@@ -1,17 +1,24 @@
+"use client";
+
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { ModeToggle } from "@/components/mode-toggle";
+import { useDisclosure } from "@/lib/hooks/useDisclosure";
+
+const useSiteHeaderController = () => {
+  const drawer = useDisclosure();
+
+  const onClickMenu = drawer.onOpen;
+
+  return { isDrawerOpen: drawer.isOpen, onClickMenu };
+};
 
 export function SiteHeader() {
+  const { isDrawerOpen, onClickMenu } = useSiteHeaderController();
+
   return (
-    <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container flex h-14 items-center">
-        <MainNav />
-        <MobileNav />
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <ModeToggle />
-        </div>
-      </div>
+    <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full bg-background/95 backdrop-blur">
+      <MainNav onClickMenu={onClickMenu} />
+      <MobileNav />
     </header>
   );
 }

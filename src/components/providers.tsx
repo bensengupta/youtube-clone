@@ -7,9 +7,7 @@ import { api, trpcCreateClientOptions } from "@/utils/api";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export function TrpcProvider({ children }: React.PropsWithChildren) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -29,13 +27,11 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
       </QueryClientProvider>
     </api.Provider>
   );
-};
+}
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export function AuthProvider({ children }: React.PropsWithChildren) {
   return <SessionProvider>{children}</SessionProvider>;
-};
+}
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {
   return (

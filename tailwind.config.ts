@@ -4,6 +4,9 @@ export default {
   darkMode: ["class"],
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontSize: {
+      xs: "0.625rem",
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -18,6 +21,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "searchbox-background": "hsl(var(--searchbox-background))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -36,6 +40,7 @@ export default {
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
+          transparent: "hsla(var(--accent-transparent))",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {

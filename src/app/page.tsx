@@ -1,12 +1,38 @@
+import { VideoCardSkeleton } from "@/components/video-card";
+import { nanoid } from "nanoid";
+
+const sampleVideos = [
+  {
+    title: "Trip to the Toronto zoo",
+  },
+  {
+    title: "Lego star wars unboxing",
+  },
+  {
+    title: "Sound of freedom movie review",
+  },
+  {
+    title: "Debate on political issues",
+  },
+];
+
+const videos = [
+  ...sampleVideos,
+  ...sampleVideos,
+  ...sampleVideos,
+  ...sampleVideos,
+  ...sampleVideos,
+  ...sampleVideos,
+].map((v) => ({ id: nanoid(), ...v }));
+
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-12 px-4 py-16">
-      <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-        Create <span className="text-[rgb(204,102,255)]">T3</span> App
-      </h1>
-      <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-        Create <span className="text-[rgb(204,102,255)]">T3</span> App
-      </h1>
-    </main>
+    <div className="relative">
+      <main className="flex flex-row flex-wrap justify-center gap-x-4 gap-y-12 p-5">
+        {videos.map(({ id, title }) => (
+          <VideoCardSkeleton key={id} />
+        ))}
+      </main>
+    </div>
   );
 }

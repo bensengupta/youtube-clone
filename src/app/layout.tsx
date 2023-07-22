@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import {
   AuthProvider,
   ThemeProvider,
@@ -10,7 +10,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ weight: ["400", "500", "700"], subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          inter.className
+          roboto.className
         )}
       >
         <AuthProvider>
@@ -35,7 +35,7 @@ export default function RootLayout({
             <ThemeProvider>
               <div className="relative flex min-h-screen flex-col">
                 <SiteHeader />
-                <div className="flex flex-1">{children}</div>
+                <div className="flex flex-1 flex-col">{children}</div>
                 <SiteFooter />
               </div>
               <TailwindIndicator />
