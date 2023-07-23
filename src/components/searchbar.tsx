@@ -25,7 +25,7 @@ export function Searchbar() {
       <div className="ml-8 flex flex-1 items-center rounded-l-full border border-input bg-searchbox-background pl-4 focus-within:border-blue-800 focus-within:shadow-inner">
         <input
           name="search_query"
-          className="w-full bg-transparent outline-none"
+          className="w-full bg-transparent outline-none placeholder:text-secondary-foreground"
           type="text"
           role="searchbox"
           placeholder="Search"

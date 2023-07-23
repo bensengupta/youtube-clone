@@ -21,7 +21,9 @@ export function MainNav() {
           <Link href="/">
             <Icons.Logo className="mx-3 my-4 h-5" />
           </Link>
-          <span className="-ml-1.5 mt-3 text-xs text-foreground/60">CLONE</span>
+          <span className="-ml-1.5 mt-3 text-xs text-secondary-foreground">
+            CLONE
+          </span>
         </div>
       </div>
       <div className="hidden basis-[732px] sm:block">
