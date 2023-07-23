@@ -4,9 +4,6 @@ export default {
   darkMode: ["class"],
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    fontSize: {
-      xs: "0.625rem",
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -15,6 +12,9 @@ export default {
       },
     },
     extend: {
+      fontSize: {
+        xs: "0.625rem",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

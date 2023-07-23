@@ -9,9 +9,9 @@ export function useDisclosure(props: UseDisclosureProps = {}) {
 
   const [isOpen, setIsOpen] = useState(defaultIsOpen);
 
-  const onOpen = useCallback(() => setIsOpen(true), []);
-  const onClose = useCallback(() => setIsOpen(false), []);
-  const onToggle = useCallback(() => setIsOpen((val) => !val), []);
+  const open = useCallback(() => setIsOpen(true), []);
+  const close = useCallback(() => setIsOpen(false), []);
+  const toggle = useCallback(() => setIsOpen((val) => !val), []);
 
-  return { isOpen, onOpen, onClose, onToggle };
+  return { isOpen, open, close, toggle };
 }

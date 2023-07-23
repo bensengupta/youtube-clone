@@ -5,12 +5,16 @@ import {
   ThemeProvider,
   TrpcProvider,
 } from "@/components/providers";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/cn";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-const roboto = Roboto({ weight: ["400", "500", "700"], subsets: ["latin"] });
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  fallback: ["Arial", "sans-serif"],
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -26,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background antialiased",
           roboto.className
         )}
       >

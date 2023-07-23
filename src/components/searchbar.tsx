@@ -1,7 +1,7 @@
 import { type ChangeEvent, useCallback, useState } from "react";
 import { Button } from "./ui/button";
-import { MdClear, MdOutlineSearch } from "react-icons/md";
-import { cn } from "@/lib/utils";
+import * as Icons from "@/components/icons";
+import { cn } from "@/lib/utils/cn";
 
 const useSearchbarController = () => {
   const [value, setValue] = useState("");
@@ -47,11 +47,11 @@ export function Searchbar() {
           className={cn(!value && "hidden")}
           onClick={reset}
         >
-          <MdClear className="h-[22px] w-[22px]" />
+          <Icons.Clear className="h-[22px] w-[22px]" />
         </Button>
       </div>
       <button className="flex w-16 items-center justify-center rounded-r-full border border-l-0  border-input bg-accent">
-        <MdOutlineSearch className="h-6 w-6" />
+        <Icons.Search className="h-6 w-6" />
       </button>
     </div>
   );

@@ -39,7 +39,7 @@ const videos: VideoFragment[] = [
     thumbnailUrl: "http://dummyimage.com/720x404.png/5fa2dd/ffffff",
     url: "/watch?v=1",
     length: "P0H9M43S",
-    viewCount: 29771151,
+    viewCount: 291,
     publishedAt: "2021-07-17T23:11:24Z",
   },
   {
@@ -49,17 +49,18 @@ const videos: VideoFragment[] = [
     thumbnailUrl: "http://dummyimage.com/720x404.png/cc0000/ffffff",
     url: "/watch?v=2",
     length: "P0H9M43S",
-    viewCount: 215339912,
+    viewCount: 6912,
     publishedAt: "2022-04-20T13:14:03Z",
   },
   {
     id: "3",
-    title: "Smoke on the Potato Fields (Dým bramborové nate)",
+    title:
+      "Oppenheimer movie review - the reviews don't do it justice it was truly a masterpiece",
     owner: pewdiepie,
     thumbnailUrl: "http://dummyimage.com/720x404.png/5fa2dd/ffffff",
     url: "/watch?v=3",
     length: "P0H9M43S",
-    viewCount: 634436087,
+    viewCount: 636087,
     publishedAt: "2023-02-23T18:37:38Z",
   },
   {
@@ -69,7 +70,7 @@ const videos: VideoFragment[] = [
     thumbnailUrl: "http://dummyimage.com/720x404.png/5fa2dd/ffffff",
     url: "/watch?v=4",
     length: "P0H9M43S",
-    viewCount: 467412695,
+    viewCount: 4672695,
     publishedAt: "2023-04-29T07:34:46Z",
   },
   {
@@ -79,7 +80,7 @@ const videos: VideoFragment[] = [
     thumbnailUrl: "http://dummyimage.com/720x404.png/ff4444/ffffff",
     url: "/watch?v=5",
     length: "P0H9M43S",
-    viewCount: 233680613,
+    viewCount: 23680613,
     publishedAt: "2022-03-01T05:10:41Z",
   },
   {
@@ -99,7 +100,7 @@ const videos: VideoFragment[] = [
     thumbnailUrl: "http://dummyimage.com/720x404.png/ff4444/ffffff",
     url: "/watch?v=7",
     length: "P0H9M43S",
-    viewCount: 530598338,
+    viewCount: 1530598338,
     publishedAt: "2021-11-05T12:52:22Z",
   },
   {
@@ -277,10 +278,13 @@ const videos: VideoFragment[] = [
 export const videosRouter = createTRPCRouter({
   list: publicProcedure
     .input(z.object({ page: z.number() }))
-    .query(({ input }) => {
+    .query(async ({ input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       if (input.page > 3) {
         return [];
       }
+
       return videos;
     }),
 

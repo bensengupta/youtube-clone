@@ -7,9 +7,10 @@ import { useDisclosure } from "@/lib/hooks/useDisclosure";
 const useSiteHeaderController = () => {
   const drawer = useDisclosure();
 
-  const onClickMenu = drawer.onOpen;
+  const isDrawerOpen = drawer.isOpen;
+  const onClickMenu = drawer.open;
 
-  return { isDrawerOpen: drawer.isOpen, onClickMenu };
+  return { isDrawerOpen, onClickMenu };
 };
 
 export function SiteHeader() {
