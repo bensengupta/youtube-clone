@@ -13,5 +13,5 @@ export function useDisclosure(props: UseDisclosureProps = {}) {
   const close = useCallback(() => setIsOpen(false), []);
   const toggle = useCallback(() => setIsOpen((val) => !val), []);
 
-  return { isOpen, open, close, toggle };
+  return { isOpen, open, close, toggle, setIsOpen };
 }

@@ -6,18 +6,17 @@ import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { Searchbar } from "./searchbar";
 import Image from "next/image";
+import { NavDrawerTrigger } from "./nav-drawer";
 
-interface MainNavProps {
-  onClickMenu: () => void;
-}
-
-export function MainNav({ onClickMenu }: MainNavProps) {
+export function MainNav() {
   return (
     <div className="flex h-14 flex-1 items-center justify-between gap-4 px-4">
       <div className="flex flex-shrink-0 items-center">
-        <Button variant="ghost" size="icon" onClick={onClickMenu}>
-          <Icons.Menu className="h-[22px] w-[22px]" />
-        </Button>
+        <NavDrawerTrigger>
+          <Button variant="ghost" size="icon">
+            <Icons.Menu className="h-[22px] w-[22px]" />
+          </Button>
+        </NavDrawerTrigger>
         <div className="flex">
           <Link href="/">
             <Icons.Logo className="mx-3 my-4 h-5" />
@@ -28,7 +27,7 @@ export function MainNav({ onClickMenu }: MainNavProps) {
       <div className="hidden basis-[732px] sm:block">
         <Searchbar />
       </div>
-      <nav className="text-sm flex flex-shrink-0 items-center gap-2 font-medium">
+      <nav className="flex flex-shrink-0 items-center gap-2 text-sm font-medium">
         <ModeToggle />
         <Button variant="ghost" size="icon">
           <Icons.VideoUpload className="h-6 w-6" />

@@ -1,25 +1,29 @@
 "use client";
 
 import { MainNav } from "@/components/main-nav";
-import { MobileNav } from "@/components/mobile-nav";
+import { NavDrawerContent, NavDrawerRoot } from "@/components/nav-drawer";
 import { useDisclosure } from "@/lib/hooks/useDisclosure";
 
 const useSiteHeaderController = () => {
   const drawer = useDisclosure();
 
   const isDrawerOpen = drawer.isOpen;
-  const onClickMenu = drawer.open;
+  const onDrawerOpenChange = drawer.setIsOpen;
+  const onClickDrawerLink = drawer.close;
 
-  return { isDrawerOpen, onClickMenu };
+  return { isDrawerOpen, onDrawerOpenChange, onClickDrawerLink };
 };
 
 export function SiteHeader() {
-  const { isDrawerOpen, onClickMenu } = useSiteHeaderController();
+  const { isDrawerOpen, onDrawerOpenChange, onClickDrawerLink } =
+    useSiteHeaderController();
 
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full bg-background/95 backdrop-blur">
-      <MainNav onClickMenu={onClickMenu} />
-      <MobileNav />
+      <NavDrawerRoot isOpen={isDrawerOpen} onOpenChange={onDrawerOpenChange}>
+        <MainNav />
+        <NavDrawerContent onClickLink={onClickDrawerLink} />
+      </NavDrawerRoot>
     </header>
   );
 }

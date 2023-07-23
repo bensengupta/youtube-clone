@@ -11,12 +11,12 @@ interface VideoCardProps {
 export function VideoCard(props: VideoCardProps) {
   const { video } = props;
   return (
-    <article className="max-h- flex aspect-[1.14] min-w-[320px] max-w-[360px] flex-1 flex-col gap-[10px]">
+    <article className="flex flex-1 flex-col gap-[10px]">
       <div className="relative flex aspect-video w-full overflow-hidden rounded-md">
         {video ? (
           <Image
             src={video.thumbnailUrl}
-            alt="Video thumbnail"
+            alt=""
             className="rounded-md object-cover"
             fill
             unoptimized
@@ -30,7 +30,7 @@ export function VideoCard(props: VideoCardProps) {
           {video ? (
             <Image
               src={video.owner.thumbnailUrl}
-              alt="Author thumbnail"
+              alt=""
               className="rounded-full object-cover"
               fill
               unoptimized
