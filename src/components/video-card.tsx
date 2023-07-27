@@ -2,7 +2,12 @@ import * as React from "react";
 import { Skeleton } from "./ui/skeleton";
 import type { VideoListItem } from "@/ts/types";
 import Image from "next/image";
-import { formatPublishedAtDate, formatViewCount } from "@/lib/utils/format";
+import {
+  formatPublishedAtDate,
+  formatVideoLength,
+  formatViewCount,
+} from "@/lib/utils/format";
+import Link from "next/link";
 
 interface VideoCardProps {
   video?: VideoListItem;
@@ -11,16 +16,26 @@ interface VideoCardProps {
 export function VideoCard(props: VideoCardProps) {
   const { video } = props;
   return (
-    <article className="flex flex-1 flex-col gap-[10px]">
+    <Link
+      href={video ? video.url : "#"}
+      aria-hidden
+      tabIndex={-1}
+      className="active flex flex-1 cursor-pointer flex-col gap-[10px] rounded-sm p-1 transition-colors active:bg-accent-transparent"
+    >
       <div className="relative flex aspect-video w-full overflow-hidden rounded-md">
         {video ? (
-          <Image
-            src={video.thumbnailUrl}
-            alt=""
-            className="rounded-md object-cover"
-            fill
-            unoptimized
-          />
+          <Link href={video.url} aria-hidden tabIndex={-1}>
+            <Image
+              src={video.thumbnailUrl}
+              alt=""
+              className="rounded-md object-cover"
+              fill
+              unoptimized
+            />
+            <span className="absolute bottom-0 right-0 z-10 m-1 rounded-sm bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
+              {formatVideoLength(video.length)}
+            </span>
+          </Link>
         ) : (
           <Skeleton className="flex-1" />
         )}
@@ -28,24 +43,31 @@ export function VideoCard(props: VideoCardProps) {
       <div className="flex gap-3">
         <div className="relative mt-0.5 flex h-9 w-9 overflow-hidden rounded-full">
           {video ? (
-            <Image
-              src={video.owner.thumbnailUrl}
-              alt=""
-              className="rounded-full object-cover"
-              fill
-              unoptimized
-            />
+            <Link href={video.owner.url} tabIndex={-1}>
+              <Image
+                src={video.owner.thumbnailUrl}
+                alt=""
+                className="rounded-full object-cover"
+                fill
+                unoptimized
+              />
+            </Link>
           ) : (
             <Skeleton className="flex-1 rounded-full" />
           )}
         </div>
         {video ? (
-          <div className="flex-1">
-            <a className="line-clamp-2 font-medium leading-snug">
+          <div className="flex flex-1 flex-col items-start">
+            <Link
+              href={video.url}
+              className="line-clamp-2 font-medium leading-snug"
+            >
               {video.title}
-            </a>
-            <span className="text-sm text-muted-foreground">
-              <a className="line-clamp-1 pt-1">{video.owner.name}</a>
+            </Link>
+            <span className="flex flex-col items-start text-sm text-muted-foreground">
+              <Link href={video.owner.url} className="line-clamp-1 pt-1">
+                {video.owner.name}
+              </Link>
               <p className="flex">
                 <span>{formatViewCount(video.viewCount)} views</span>
                 <span className="before:mx-1 before:content-['•']">
@@ -61,6 +83,6 @@ export function VideoCard(props: VideoCardProps) {
           </div>
         )}
       </div>
-    </article>
+    </Link>
   );
 }

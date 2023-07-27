@@ -1,4 +1,5 @@
 import { intlFormatDistance, isBefore, sub } from "date-fns";
+import parseISODuration from "./parseISODuration";
 
 export function formatPublishedAtDate(publishedAt: string) {
   const today = new Date();
@@ -73,4 +74,10 @@ export function formatViewCount(viewCount: number) {
   }
 
   return `999B+`;
+}
+
+export function formatVideoLength(length: string) {
+  const { hours = 0, minutes = 0, seconds = 0 } = parseISODuration(length);
+
+  return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }

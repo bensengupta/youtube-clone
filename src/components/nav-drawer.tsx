@@ -61,7 +61,7 @@ export function NavDrawerContent({ onClickLink }: NavDrawerContentProps) {
             <NavLink href="/" onClickLink={onClickLink}>
               <Icons.Logo className="mx-3 my-4 h-5" />
             </NavLink>
-            <span className="-ml-1.5 mt-3 text-xs text-secondary-foreground">
+            <span className="-ml-1.5 mt-3 text-[0.625rem] text-secondary-foreground">
               CLONE
             </span>
           </div>

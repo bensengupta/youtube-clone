@@ -7,6 +7,11 @@ import { Button } from "./ui/button";
 import { Searchbar } from "./searchbar";
 import Image from "next/image";
 import { NavDrawerTrigger } from "./nav-drawer";
+import {
+  UserDropdownMenu,
+  UserDropdownMenuContent,
+  UserDropdownMenuTrigger,
+} from "./user-dropdown";
 
 export function MainNav() {
   return (
@@ -21,7 +26,7 @@ export function MainNav() {
           <Link href="/">
             <Icons.Logo className="mx-3 my-4 h-5" />
           </Link>
-          <span className="-ml-1.5 mt-3 text-xs text-secondary-foreground">
+          <span className="-ml-1.5 mt-3 text-[0.625rem] text-secondary-foreground">
             CLONE
           </span>
         </div>
@@ -37,16 +42,21 @@ export function MainNav() {
         <Button variant="ghost" size="icon">
           <Icons.NotificationNone className="h-6 w-6" />
         </Button>
-        <button className="mx-3.5 rounded-full">
-          <Image
-            width={32}
-            height={32}
-            className="rounded-full"
-            src="https://picsum.photos/id/237/200/200"
-            alt="Profile Picture"
-            unoptimized
-          />
-        </button>
+        <UserDropdownMenu>
+          <UserDropdownMenuTrigger asChild>
+            <button className="mx-3.5 rounded-full">
+              <Image
+                width={32}
+                height={32}
+                className="rounded-full"
+                src="https://picsum.photos/id/237/200/200"
+                alt="Profile Picture"
+                unoptimized
+              />
+            </button>
+          </UserDropdownMenuTrigger>
+          <UserDropdownMenuContent />
+        </UserDropdownMenu>
       </nav>
     </div>
   );
