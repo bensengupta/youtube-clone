@@ -1,5 +1,5 @@
-import { VideoCard } from "@/components/video-card";
 import type { VideoListItem } from "@/ts/types";
+import { VideoCard, VideoCardSkeleton } from "@/components/video-card";
 import { nanoid } from "nanoid";
 
 const DEFAULT_VIDEOS = Array(24).fill(undefined) as undefined[];
@@ -18,7 +18,7 @@ export function Home(props: HomeProps) {
             key={video ? video.id : nanoid()}
             className="flex min-w-[320px] flex-1 md:max-w-[360px]"
           >
-            <VideoCard video={video} />
+            {video ? <VideoCard video={video} /> : <VideoCardSkeleton />}
           </div>
         ))}
       </main>

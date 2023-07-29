@@ -275,6 +275,17 @@ const videos: VideoFragment[] = [
   },
 ];
 
+const video = {
+  id: "24",
+  title: "Hidden, The",
+  owner: pewdiepie,
+  thumbnailUrl: "http://dummyimage.com/720x404.png/dddddd/000000",
+  url: "/watch?v=24",
+  length: "PT0H9M43S",
+  viewCount: 262354345,
+  publishedAt: "2022-03-14T05:28:58Z",
+};
+
 export const videosRouter = createTRPCRouter({
   list: publicProcedure
     .input(z.object({ page: z.number() }))
@@ -287,6 +298,11 @@ export const videosRouter = createTRPCRouter({
 
       return videos;
     }),
+  getVideoById: publicProcedure.input(z.string()).query(async ({ input }) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return video;
+  }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
