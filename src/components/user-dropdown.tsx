@@ -7,20 +7,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { type Session } from "next-auth";
+import { signOut } from "next-auth/react";
 
 export const UserDropdownMenu = DropdownMenu;
 
 export const UserDropdownMenuTrigger = DropdownMenuTrigger;
 
-export function UserDropdownMenuContent() {
+interface UserDropdownMenuContentProps {
+  session: Session;
+}
+
+export function UserDropdownMenuContent({
+  session,
+}: UserDropdownMenuContentProps) {
   return (
     <DropdownMenuContent>
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+      <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>Profile</DropdownMenuItem>
-      <DropdownMenuItem>Billing</DropdownMenuItem>
-      <DropdownMenuItem>Team</DropdownMenuItem>
-      <DropdownMenuItem>Subscription</DropdownMenuItem>
+      <DropdownMenuItem onClick={signOut as () => void}>
+        Sign out
+      </DropdownMenuItem>
     </DropdownMenuContent>
   );
 }

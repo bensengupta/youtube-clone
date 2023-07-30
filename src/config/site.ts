@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "YT Clone",
-  url: "https://youtube-clone.bensengupta.com",
-  ogImage: "https://youtube-clone.bensengupta.com/og.jpg",
-  description: "Modern youtube clone.",
+  name: "Puck",
+  url: "https://puck.bensengupta.com",
+  ogImage: "https://puck.bensengupta.com/og.jpg",
+  description: "Share videos painlessly.",
   links: {
     personalGithub: "https://github.com/bensengupta",
     github: "https://github.com/bensengupta/youtube-clone",

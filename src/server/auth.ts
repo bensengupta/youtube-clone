@@ -1,12 +1,12 @@
 import {
+  type DefaultSession,
   getServerSession,
   type NextAuthOptions,
-  type DefaultSession,
+  type User,
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter";
-import upstashRedisClient from "@upstash/redis";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
+import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
+import { Redis } from "@upstash/redis";
 import { env } from "@/env.mjs";
 
 /**
@@ -30,10 +30,10 @@ declare module "next-auth" {
   // }
 }
 
-const redis = upstashRedisClient(
-  env.UPSTASH_REDIS_URL,
-  env.UPSTASH_REDIS_TOKEN
-);
+const redis = new Redis({
+  url: env.UPSTASH_REDIS_URL,
+  token: env.UPSTASH_REDIS_TOKEN,
+});
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -41,19 +41,11 @@ const redis = upstashRedisClient(
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
-  },
+  adapter: UpstashRedisAdapter(redis),
   providers: [
     GoogleProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     /**
      * ...add more providers here.

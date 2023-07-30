@@ -12,10 +12,16 @@ import {
   UserDropdownMenuContent,
   UserDropdownMenuTrigger,
 } from "./user-dropdown";
+import { signIn, useSession } from "next-auth/react";
+import { Skeleton } from "./ui/skeleton";
 
 export function MainNav() {
+  const { data: session, status } = useSession();
+
+  console.log(session);
+
   return (
-    <div className="flex h-14 flex-1 items-center justify-between gap-4 px-4">
+    <nav className="flex h-14 flex-1 items-center justify-between gap-4 px-4">
       <div className="flex flex-shrink-0 items-center">
         <NavDrawerTrigger>
           <Button variant="ghost" size="icon">
@@ -34,7 +40,7 @@ export function MainNav() {
       <div className="hidden basis-[732px] sm:block">
         <Searchbar />
       </div>
-      <nav className="flex flex-shrink-0 items-center gap-2 text-sm font-medium">
+      <div className="flex flex-shrink-0 items-center gap-2 text-sm font-medium">
         <ModeToggle />
         <Button variant="ghost" size="icon">
           <Icons.VideoUpload className="h-6 w-6" />
@@ -42,22 +48,32 @@ export function MainNav() {
         <Button variant="ghost" size="icon">
           <Icons.NotificationNone className="h-6 w-6" />
         </Button>
-        <UserDropdownMenu>
-          <UserDropdownMenuTrigger asChild>
-            <button className="mx-3.5 rounded-full">
-              <Image
-                width={32}
-                height={32}
-                className="rounded-full"
-                src="https://picsum.photos/id/237/200/200"
-                alt="Profile Picture"
-                unoptimized
-              />
-            </button>
-          </UserDropdownMenuTrigger>
-          <UserDropdownMenuContent />
-        </UserDropdownMenu>
-      </nav>
-    </div>
+        <div className="mx-3.5">
+          {status === "loading" && (
+            <Skeleton className="h-8 w-8 rounded-full" />
+          )}
+          {status === "authenticated" && (
+            <UserDropdownMenu>
+              <UserDropdownMenuTrigger asChild>
+                <button className="rounded-full">
+                  <Image
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    src={session.user.image}
+                    alt="Profile Picture"
+                    unoptimized
+                  />
+                </button>
+              </UserDropdownMenuTrigger>
+              <UserDropdownMenuContent session={session} />
+            </UserDropdownMenu>
+          )}
+          {status === "unauthenticated" && (
+            <Button onClick={signIn as () => void}>Sign in</Button>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 }
