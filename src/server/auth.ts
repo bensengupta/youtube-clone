@@ -2,12 +2,10 @@ import {
   type DefaultSession,
   getServerSession,
   type NextAuthOptions,
-  type User,
 } from "next-auth";
-import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
-import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
-import { Redis } from "@upstash/redis";
+import GoogleProvider from "next-auth/providers/google";
 import { env } from "@/env.mjs";
+import { DrizzleAdapter } from "./db/adapter";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -21,7 +19,10 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession["user"];
+      name: string | null;
+      email: string;
+      image: string | null;
+    };
   }
 
   // interface User {
@@ -30,18 +31,13 @@ declare module "next-auth" {
   // }
 }
 
-const redis = new Redis({
-  url: env.UPSTASH_REDIS_URL,
-  token: env.UPSTASH_REDIS_TOKEN,
-});
-
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  adapter: UpstashRedisAdapter(redis),
+  adapter: DrizzleAdapter(),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -57,6 +53,11 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  callbacks: {
+    session({ session, user }) {
+      return { ...session, user: { ...session.user, id: user.id } };
+    },
+  },
 };
 
 /**

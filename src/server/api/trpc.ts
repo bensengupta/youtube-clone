@@ -7,11 +7,11 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
+import { db } from "../db";
 
 /**
  * 1. CONTEXT
@@ -23,6 +23,7 @@ import { getServerAuthSession } from "@/server/auth";
 
 type CreateContextOptions = {
   session: Session | null;
+  db: typeof db;
 };
 
 /**
@@ -35,10 +36,8 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = ({ session }: CreateContextOptions) => {
-  return {
-    session,
-  };
+const createInnerTRPCContext = (params: CreateContextOptions) => {
+  return params;
 };
 
 /**
@@ -53,6 +52,7 @@ export const createTRPCContext = async () => {
 
   return createInnerTRPCContext({
     session,
+    db,
   });
 };
 

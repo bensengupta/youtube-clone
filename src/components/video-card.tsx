@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Skeleton } from "./ui/skeleton";
 import type { VideoListItem } from "@/ts/types";
@@ -8,6 +9,7 @@ import {
   formatViewCount,
 } from "@/lib/utils/format";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function VideoCardSkeleton() {
   return (
@@ -34,9 +36,10 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ video }: VideoCardProps) {
+  const router = useRouter();
   return (
-    <Link
-      href={video.url}
+    <button
+      onClick={() => void router.push(video.url)}
       aria-hidden
       tabIndex={-1}
       className="active flex flex-1 cursor-pointer flex-col gap-[10px] rounded-sm p-1 transition-colors active:bg-accent-transparent"
@@ -87,6 +90,6 @@ export function VideoCard({ video }: VideoCardProps) {
           </span>
         </div>
       </div>
-    </Link>
+    </button>
   );
 }

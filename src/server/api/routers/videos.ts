@@ -4,6 +4,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
+import { videos } from "@/server/db/schema/videos";
 
 interface OwnerFragment {
   name: string;
@@ -31,7 +32,7 @@ interface VideoFragment {
   publishedAt: string;
 }
 
-const videos: VideoFragment[] = [
+const sampleVideos: VideoFragment[] = [
   {
     id: "1",
     title: "Adventures of Don Juan",
@@ -275,17 +276,6 @@ const videos: VideoFragment[] = [
   },
 ];
 
-const video = {
-  id: "24",
-  title: "Hidden, The",
-  owner: pewdiepie,
-  thumbnailUrl: "http://dummyimage.com/720x404.png/dddddd/000000",
-  url: "/watch?v=24",
-  length: "PT0H9M43S",
-  viewCount: 262354345,
-  publishedAt: "2022-03-14T05:28:58Z",
-};
-
 export const videosRouter = createTRPCRouter({
   list: publicProcedure
     .input(z.object({ page: z.number() }))
@@ -296,14 +286,16 @@ export const videosRouter = createTRPCRouter({
         return [];
       }
 
-      return videos;
+      return sampleVideos;
     }),
   getVideoById: publicProcedure.input(z.string()).query(async ({ input }) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return video;
+    return sampleVideos[0];
   }),
-
+  seed: publicProcedure.query(async ({ ctx }) => {
+    await ctx.db.insert(videos).values(sampleVideos);
+  }),
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),

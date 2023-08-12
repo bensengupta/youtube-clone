@@ -70,7 +70,7 @@ export function MainNav() {
             </UserDropdownMenu>
           )}
           {status === "unauthenticated" && (
-            <Button onClick={signIn as () => void}>Sign in</Button>
+            <Button onClick={signIn}>Sign in</Button>
           )}
         </div>
       </div>

@@ -25,7 +25,7 @@ export function UserDropdownMenuContent({
     <DropdownMenuContent>
       <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem onClick={signOut as () => void}>
+      <DropdownMenuItem onClick={() => void signOut()}>
         Sign out
       </DropdownMenuItem>
     </DropdownMenuContent>
