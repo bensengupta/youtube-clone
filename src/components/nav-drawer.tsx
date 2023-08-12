@@ -14,6 +14,7 @@ import {
 import { Button, buttonVariants } from "./ui/button";
 import { siteConfig } from "@/config/site";
 import { getYear } from "date-fns";
+import * as url from "url";
 
 interface NavDrawerRootProps {
   isOpen: boolean;
@@ -264,7 +265,7 @@ function NavLink({
     <Link
       href={href}
       onClick={() => {
-        router.push(href.toString());
+        router.push(url.format(href));
         onClickLink();
       }}
       className={cn(className)}
