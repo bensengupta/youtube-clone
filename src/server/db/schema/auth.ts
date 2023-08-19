@@ -69,7 +69,7 @@ export const users = mysqlTable(
   "users",
   {
     id: varchar("id", { length: 191 }).notNull().primaryKey(),
-    name: varchar("name", { length: 191 }),
+    name: varchar("name", { length: 191 }).notNull(),
     email: varchar("email", { length: 191 }).notNull(),
     emailVerified: timestamp("email_verified"),
     image: varchar("image", { length: 191 }),

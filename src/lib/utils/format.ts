@@ -81,3 +81,12 @@ export function formatVideoLength(length: string) {
 
   return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }
+
+export function formatAvatarInitials(name: string) {
+  return name
+    .split(" ")
+    .slice(0, 2)
+    .filter((word) => word.length > 0)
+    .map((word) => word[0]!.toUpperCase())
+    .join("");
+}

@@ -21,11 +21,11 @@
 
     --searchbox-background: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 216 63% 40%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 0 0% 38%;
+    --secondary-foreground: 0 0% 50%;
 
     --accent: 210 40% 96.1%;
     --accent-transparent: 210 40% 100% 0.1;
@@ -57,7 +57,7 @@
 
     --searchbox-background: 0 0% 7%;
 
-    --primary: 210 40% 98%;
+    --primary: 216 63% 48%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;

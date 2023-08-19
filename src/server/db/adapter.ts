@@ -2,13 +2,15 @@ import { and, eq, placeholder } from "drizzle-orm";
 import type { Adapter } from "next-auth/adapters";
 import { db } from ".";
 import { accounts, sessions, users, verificationTokens } from "./schema/auth";
+import { nanoid } from "nanoid";
 
 export const DrizzleAdapter = (): Adapter => {
   return {
-    createUser: async (userData) => {
+    createUser: async ({ name, ...userData }) => {
       const id = crypto.randomUUID();
       await db.insert(users).values({
         id,
+        name: name ?? `user-${nanoid()}`,
         ...userData,
       });
 
@@ -36,8 +38,9 @@ export const DrizzleAdapter = (): Adapter => {
       return account?.user ?? null;
     },
 
-    updateUser: async ({ id, ...data }) => {
-      await db.update(users).set(data).where(eq(users.id, id));
+    updateUser: async ({ id, name, ...data }) => {
+      const updateData = name ? { ...data, name } : data;
+      await db.update(users).set(updateData).where(eq(users.id, id));
       const user = await pGetUserById.execute({ id });
       if (!user) throw new Error("User not found");
       return user;

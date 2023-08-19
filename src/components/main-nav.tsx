@@ -14,11 +14,11 @@ import {
 } from "./user-dropdown";
 import { signIn, useSession } from "next-auth/react";
 import { Skeleton } from "./ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { formatAvatarInitials } from "@/lib/utils/format";
 
 export function MainNav() {
   const { data: session, status } = useSession();
-
-  console.log(session);
 
   return (
     <nav className="flex h-14 flex-1 items-center justify-between gap-4 px-4">
@@ -56,21 +56,19 @@ export function MainNav() {
             <UserDropdownMenu>
               <UserDropdownMenuTrigger asChild>
                 <button className="rounded-full">
-                  <Image
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                    src={session.user.image}
-                    alt="Profile Picture"
-                    unoptimized
-                  />
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={session.user.image ?? undefined} />
+                    <AvatarFallback>
+                      {formatAvatarInitials(session.user.name)}
+                    </AvatarFallback>
+                  </Avatar>
                 </button>
               </UserDropdownMenuTrigger>
               <UserDropdownMenuContent session={session} />
             </UserDropdownMenu>
           )}
           {status === "unauthenticated" && (
-            <Button onClick={signIn}>Sign in</Button>
+            <Button onClick={() => void signIn()}>Sign in</Button>
           )}
         </div>
       </div>

@@ -31,6 +31,8 @@ export {
   Flag as Report,
   HelpCircle as Help,
   MessageSquarePlus as SendFeedback,
+  UploadCloud as FileUpload,
+  FileX as InvalidFile,
 } from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
