@@ -1,17 +1,18 @@
-import { connect } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { migrate } from "drizzle-orm/planetscale-serverless/migrator";
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
 import { env } from "@/env.mjs";
+import { createClient } from "@libsql/client";
 import * as AuthSchema from "./schema/auth";
 import * as VideoUploadSchema from "./schema/video-uploads";
 import * as VideoSchema from "./schema/videos";
 
-const connection = connect({
+const client = createClient({
   url: env.DATABASE_URL,
+  authToken: env.DATABASE_AUTH_TOKEN,
 });
 
-export const db = drizzle(connection, {
+export const db = drizzle(client, {
   schema: { ...AuthSchema, ...VideoSchema, ...VideoUploadSchema },
 });
 

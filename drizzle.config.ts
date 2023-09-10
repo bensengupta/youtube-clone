@@ -6,8 +6,8 @@ import type { Config } from "drizzle-kit";
 export default {
   schema: "./src/server/db/schema/*",
   out: "./migrations",
-  driver: "mysql2",
+  driver: "libsql",
   dbCredentials: {
-    connectionString: env.DATABASE_URL,
+    url: env.DATABASE_URL,
   },
 } satisfies Config;

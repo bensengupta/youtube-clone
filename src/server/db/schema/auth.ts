@@ -1,34 +1,22 @@
 import { relations } from "drizzle-orm";
-import {
-  datetime,
-  int,
-  mysqlTable,
-  primaryKey,
-  text,
-  timestamp,
-  uniqueIndex,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { int, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
-export const accounts = mysqlTable(
+export const accounts = sqliteTable(
   "accounts",
   {
-    id: varchar("id", { length: 191 }).notNull().primaryKey(),
-    userId: varchar("user_id", { length: 191 }).notNull(),
-    type: varchar("type", { length: 191 }).notNull(),
-    provider: varchar("provider", { length: 191 }).notNull(),
-    providerAccountId: varchar("provider_account_id", {
-      length: 191,
-    }).notNull(),
+    id: text("id").notNull().primaryKey(),
+    userId: text("user_id").notNull(),
+    type: text("type").notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
     refreshToken: text("refresh_token"),
     accessToken: text("access_token"),
     expiresAt: int("expires_at"),
-    tokenType: varchar("token_type", { length: 191 }),
-    scope: varchar("scope", { length: 191 }),
+    tokenType: text("token_type"),
+    scope: text("scope"),
     idToken: text("id_token"),
-    sessionState: varchar("session_state", { length: 191 }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+    sessionState: text("session_state"),
+    createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
   },
   (account) => ({
     providerIndex: uniqueIndex("provider_idx").on(
@@ -38,24 +26,18 @@ export const accounts = mysqlTable(
   })
 );
 
-export const sessions = mysqlTable(
-  "sessions",
-  {
-    userId: varchar("user_id", { length: 191 }).notNull(),
-    expires: datetime("expires").notNull(),
-    sessionToken: varchar("session_token", { length: 191 }).notNull(),
-  },
-  (session) => ({
-    sessionTokenIndex: primaryKey(session.sessionToken),
-  })
-);
+export const sessions = sqliteTable("sessions", {
+  sessionToken: text("session_token").notNull().primaryKey(),
+  userId: text("user_id").notNull(),
+  expires: text("expires").notNull(),
+});
 
-export const verificationTokens = mysqlTable(
+export const verificationTokens = sqliteTable(
   "verification_tokens",
   {
-    identifier: varchar("identifier", { length: 191 }).notNull(),
-    token: varchar("token", { length: 191 }).notNull(),
-    expires: datetime("expires").notNull(),
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: text("expires").notNull(),
   },
   (request) => ({
     identifierTokenIndex: uniqueIndex("identifier_token_idx").on(
@@ -65,16 +47,15 @@ export const verificationTokens = mysqlTable(
   })
 );
 
-export const users = mysqlTable(
+export const users = sqliteTable(
   "users",
   {
-    id: varchar("id", { length: 191 }).notNull().primaryKey(),
-    name: varchar("name", { length: 191 }).notNull(),
-    email: varchar("email", { length: 191 }).notNull(),
-    emailVerified: timestamp("email_verified"),
-    image: varchar("image", { length: 191 }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    emailVerified: text("email_verified"),
+    image: text("image"),
+    createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
   },
   (user) => ({
     emailIndex: uniqueIndex("email_idx").on(user.email),
