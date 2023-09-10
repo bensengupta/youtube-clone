@@ -1,9 +1,17 @@
-import { Home } from "./home";
-import { createTRPCCaller } from "@/server/api/root";
+import { VideoCard } from "@/components/video-card";
+import { getVideos } from "@/server/fetchers/videos";
+import { HomeLayout, HomeVideoCardContainer } from "./components";
 
 export default async function Page() {
-  const trpc = await createTRPCCaller();
-  const videos = await trpc.videos.list({ page: 1 });
+  const videos = await getVideos();
 
-  return <Home videos={videos} />;
+  return (
+    <HomeLayout>
+      {videos.map((video) => (
+        <HomeVideoCardContainer key={video.id}>
+          <VideoCard video={video} />
+        </HomeVideoCardContainer>
+      ))}
+    </HomeLayout>
+  );
 }

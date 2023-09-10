@@ -1,15 +1,14 @@
 "use client";
-import * as React from "react";
-import { Skeleton } from "./ui/skeleton";
-import type { VideoListItem } from "@/ts/types";
-import Image from "next/image";
 import {
   formatPublishedAtDate,
   formatVideoLength,
   formatViewCount,
 } from "@/lib/utils/format";
+import type { VideoFragment } from "@/server/fetchers/videos";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
 
 export function VideoCardSkeleton() {
   return (
@@ -32,7 +31,7 @@ export function VideoCardSkeleton() {
 }
 
 interface VideoCardProps {
-  video: VideoListItem;
+  video: VideoFragment;
 }
 
 export function VideoCard({ video }: VideoCardProps) {

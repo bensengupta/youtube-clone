@@ -4,22 +4,17 @@
  *
  * We also create a few inference helpers for input and output types.
  */
+import { type AppRouter } from "@/server/routers";
 import {
-  type CreateTRPCClientOptions,
+  getFetch,
   httpBatchLink,
   loggerLink,
-  getFetch,
+  type CreateTRPCClientOptions,
 } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
-import { type AppRouter } from "@/server/api/root";
-
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") return ""; // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
-};
+import { getBaseUrl } from "./url";
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCReact<AppRouter>();

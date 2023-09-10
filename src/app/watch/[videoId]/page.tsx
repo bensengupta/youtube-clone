@@ -1,4 +1,4 @@
-import { createTRPCCaller } from "@/server/api/root";
+import { getVideos } from "@/server/fetchers/videos";
 import { Watch } from "./watch";
 
 export default async function Page({
@@ -6,7 +6,7 @@ export default async function Page({
 }: {
   params: { videoId: string };
 }) {
-  const trpc = await createTRPCCaller();
-  const video = await trpc.videos.getVideoById(params.videoId);
-  return <Watch video={video} />;
+  console.log(params.videoId);
+  const video = await getVideos();
+  return <Watch video={video[0]} />;
 }

@@ -1,43 +1,51 @@
 import { intlFormatDistance, isBefore, sub } from "date-fns";
 import parseISODuration from "./parseISODuration";
 
-export function formatPublishedAtDate(publishedAt: string) {
+export function formatPublishedAtDate(publishedAt: Date) {
   const today = new Date();
-  const date = new Date(publishedAt);
 
   const options = { numeric: "always" };
 
   const oneMinuteAgo = sub(today, { minutes: 1 });
-  if (isBefore(oneMinuteAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "second", ...options });
+  if (isBefore(oneMinuteAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, {
+      unit: "second",
+      ...options,
+    });
   }
 
   const oneHourAgo = sub(today, { hours: 1 });
-  if (isBefore(oneHourAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "minute", ...options });
+  if (isBefore(oneHourAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, {
+      unit: "minute",
+      ...options,
+    });
   }
 
   const oneDayAgo = sub(today, { days: 1 });
-  if (isBefore(oneDayAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "hour", ...options });
+  if (isBefore(oneDayAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, { unit: "hour", ...options });
   }
 
   const oneWeekAgo = sub(today, { weeks: 1 });
-  if (isBefore(oneWeekAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "day", ...options });
+  if (isBefore(oneWeekAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, { unit: "day", ...options });
   }
 
   const oneMonthAgo = sub(today, { months: 1 });
-  if (isBefore(oneMonthAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "week", ...options });
+  if (isBefore(oneMonthAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, { unit: "week", ...options });
   }
 
   const oneYearAgo = sub(today, { years: 1 });
-  if (isBefore(oneYearAgo, date)) {
-    return intlFormatDistance(date, today, { unit: "month", ...options });
+  if (isBefore(oneYearAgo, publishedAt)) {
+    return intlFormatDistance(publishedAt, today, {
+      unit: "month",
+      ...options,
+    });
   }
 
-  return intlFormatDistance(date, today, { unit: "year", ...options });
+  return intlFormatDistance(publishedAt, today, { unit: "year", ...options });
 }
 
 export function formatViewCount(viewCount: number) {

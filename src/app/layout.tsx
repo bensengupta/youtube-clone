@@ -1,14 +1,10 @@
-import "./globals.css";
-import { Roboto } from "next/font/google";
-import {
-  AuthProvider,
-  ThemeProvider,
-  TrpcProvider,
-} from "@/components/providers";
-import { cn } from "@/lib/utils/cn";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { SiteHeader } from "@/components/site-header";
+import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { cn } from "@/lib/utils/cn";
+import { Roboto } from "next/font/google";
+import "../styles/globals.css";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -34,18 +30,14 @@ export default function RootLayout({
           roboto.className
         )}
       >
-        <AuthProvider>
-          <TrpcProvider>
-            <ThemeProvider>
-              <div className="relative flex min-h-screen flex-col">
-                <SiteHeader />
-                <div className="flex flex-1 flex-col">{children}</div>
-                <SiteFooter />
-              </div>
-              <TailwindIndicator />
-            </ThemeProvider>
-          </TrpcProvider>
-        </AuthProvider>
+        <Providers>
+          <div className="relative flex min-h-screen flex-col">
+            <SiteHeader />
+            <div className="flex flex-1 flex-col">{children}</div>
+            <SiteFooter />
+          </div>
+          <TailwindIndicator />
+        </Providers>
       </body>
     </html>
   );

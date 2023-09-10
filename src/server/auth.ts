@@ -1,10 +1,6 @@
-import {
-  type DefaultSession,
-  getServerSession,
-  type NextAuthOptions,
-} from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import { env } from "@/env.mjs";
+import { type DefaultSession, type NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "./db/adapter";
 
 /**
@@ -58,13 +54,4 @@ export const authOptions: NextAuthOptions = {
       return { ...session, user: { ...session.user, id: user.id } };
     },
   },
-};
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-export const getServerAuthSession = () => {
-  return getServerSession(authOptions);
 };

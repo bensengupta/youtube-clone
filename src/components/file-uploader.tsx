@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone, type Accept, type DropzoneOptions } from "react-dropzone";
 import * as Icons from "./icons";
-import { Button } from "./ui/button";
 import { cn } from "@/lib/utils/cn";
 
 export enum FileUploaderKind {

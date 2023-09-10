@@ -8,9 +8,13 @@
     "lint": "next lint",
     "start": "next start",
     "db:gen": "drizzle-kit generate:mysql",
-    "db:push": "drizzle-kit push:mysql"
+    "db:drop": "drizzle-kit drop",
+    "db:push": "drizzle-kit push:mysql",
+    "db:check": "drizzle-kit check:mysql"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.409.0",
+    "@aws-sdk/s3-request-presigner": "^3.409.0",
     "@next-auth/upstash-redis-adapter": "^3.0.4",
     "@planetscale/database": "^1.10.0",
     "@radix-ui/react-avatar": "^1.0.3",
@@ -30,6 +34,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.27.0",
     "lucide-react": "^0.261.0",
     "nanoid": "^4.0.2",
@@ -67,6 +72,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.13.2"
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }
