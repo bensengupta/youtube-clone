@@ -1,8 +1,8 @@
 import { and, eq, placeholder } from "drizzle-orm";
+import { nanoid } from "nanoid";
 import type { Adapter } from "next-auth/adapters";
 import { db } from ".";
 import { accounts, sessions, users, verificationTokens } from "./schema/auth";
-import { nanoid } from "nanoid";
 
 export const DrizzleAdapter = (): Adapter => {
   return {

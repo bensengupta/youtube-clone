@@ -7,6 +7,7 @@ import {
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { nanoid } from "nanoid";
 
 export const S3 = new S3Client({
   region: "auto",
@@ -22,82 +23,110 @@ export enum ObjectPrefix {
   Video = "video-",
 }
 
-interface ProfilePictureUploadProps {
-  ownerId: string;
+export function createUploadKey(prefix: ObjectPrefix) {
+  return prefix + nanoid();
+}
+
+interface GetProfilePictureUploadPresignedUrl {
+  uploadKey: string;
   contentType: string;
   contentLength: number;
 }
 
-export function ProfilePictureUploadCommand({
-  ownerId,
+export async function getProfilePictureUploadPresignedUrl({
+  uploadKey,
   contentType,
   contentLength,
-}: ProfilePictureUploadProps) {
-  return new PutObjectCommand({
+}: GetProfilePictureUploadPresignedUrl) {
+  const command = new PutObjectCommand({
     Bucket: env.CLOUDFLARE_R2_BUCKET_NAME,
-    Key: ObjectPrefix.ProfilePicture + ownerId,
+    Key: uploadKey,
     ContentType: contentType,
     ContentLength: contentLength,
   });
+
+  const url = await getSignedUrl(S3, command, { expiresIn: 3600 });
+
+  return url;
 }
 
-interface VideoCreateMultipartUploadCommandProps {
-  videoId: string;
+interface InitiateVideoMultipartUploadProps {
+  uploadKey: string;
   contentType: string;
 }
 
-export function VideoCreateMultipartUploadCommand({
-  videoId,
+export async function initiateVideoMultipartUpload({
+  uploadKey,
   contentType,
-}: VideoCreateMultipartUploadCommandProps) {
-  return new CreateMultipartUploadCommand({
+}: InitiateVideoMultipartUploadProps) {
+  const command = new CreateMultipartUploadCommand({
     Bucket: env.CLOUDFLARE_R2_BUCKET_NAME,
-    Key: ObjectPrefix.Video + videoId,
+    Key: uploadKey,
     ContentType: contentType,
   });
+
+  const { UploadId } = await S3.send(command);
+
+  if (!UploadId) {
+    throw new Error("Video upload initiation failed");
+  }
+
+  return UploadId;
 }
 
-interface VideoUploadPartCommandProps {
-  videoId: string;
-  partNumber: number;
-  uploadId: string;
+interface GetVideoUploadPartPresignedUrlProps {
+  uploadKey: string;
+  multipartUploadId: string;
+  numParts: number;
 }
 
-export function VideoUploadPartCommand({
-  videoId,
-  partNumber,
-  uploadId,
-}: VideoUploadPartCommandProps) {
-  return new UploadPartCommand({
-    Bucket: env.CLOUDFLARE_R2_BUCKET_NAME,
-    Key: ObjectPrefix.Video + videoId,
-    PartNumber: partNumber,
-    UploadId: uploadId,
-  });
+export async function getVideoUploadPartPresignedUrls({
+  uploadKey,
+  multipartUploadId,
+  numParts,
+}: GetVideoUploadPartPresignedUrlProps) {
+  const promises: Promise<string>[] = [];
+
+  for (let idx = 0; idx < numParts; idx++) {
+    const command = new UploadPartCommand({
+      Bucket: env.CLOUDFLARE_R2_BUCKET_NAME,
+      Key: uploadKey,
+      PartNumber: idx + 1,
+      UploadId: multipartUploadId,
+    });
+
+    promises.push(getSignedUrl(S3, command, { expiresIn: 3600 }));
+  }
+
+  const urls = await Promise.all(promises);
+
+  return urls;
 }
 
-interface VideoCompleteUploadCommandProps {
-  videoId: string;
-  uploadId: string;
-  parts: { ETag: string; partNumber: number }[];
+interface Part {
+  ETag: string;
+  PartNumber: number;
 }
 
-export function VideoCompleteMultipartUploadCommand({
-  videoId,
-  uploadId,
+interface CompleteVideoMultipartUploadProps {
+  uploadKey: string;
+  multipartUploadId: string;
+  parts: Part[];
+}
+
+export async function completeVideoMultipartUpload({
+  uploadKey,
+  multipartUploadId,
   parts,
-}: VideoCompleteUploadCommandProps) {
-  return new CompleteMultipartUploadCommand({
+}: CompleteVideoMultipartUploadProps) {
+  const command = new CompleteMultipartUploadCommand({
     Bucket: env.CLOUDFLARE_R2_BUCKET_NAME,
-    Key: ObjectPrefix.Video + videoId,
-    UploadId: uploadId,
+    Key: uploadKey,
+    UploadId: multipartUploadId,
     MultipartUpload: {
-      Parts: parts.map((p) => ({ ETag: p.ETag, PartNumber: p.partNumber })),
+      Parts: parts,
     },
   });
-}
 
-export async function createSignedUrl(command: PutObjectCommand) {
-  const url = await getSignedUrl(S3, command, { expiresIn: 3600 });
-  return url;
+  await S3.send(command);
 }

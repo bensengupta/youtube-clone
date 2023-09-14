@@ -1,19 +1,27 @@
-import React, { useCallback, useState } from "react";
-import { useDropzone, type Accept, type DropzoneOptions } from "react-dropzone";
-import * as Icons from "./icons";
 import { cn } from "@/lib/utils/cn";
+import { useCallback, useState } from "react";
+import { useDropzone, type DropzoneOptions } from "react-dropzone";
+import * as Icons from "./icons";
+import { Progress } from "./ui/progress";
 
-export enum FileUploaderKind {
-  Video,
+const GENERIC_UPLOAD_FAILED_ERROR = "Upload failed :(";
+
+interface FileUploaderProps
+  extends Pick<DropzoneOptions, "accept" | "maxSize" | "multiple"> {
+  /**
+   * Progress from 0 to 1
+   */
+  progress?: number;
+  uploadLabel: string;
+  onDrop: (files: File[]) => Promise<void>;
 }
 
-interface FileUploaderProps {
-  kind: FileUploaderKind.Video;
-  onDrop: (files: [File]) => Promise<void>;
-}
-
-export function FileUploader({ onDrop, ...props }: FileUploaderProps) {
-  const [status, setStatus] = useState<"idle" | "uploading" | "error">("idle");
+export function FileUploader({
+  onDrop,
+  progress = 0,
+  ...props
+}: FileUploaderProps) {
+  const [status, setStatus] = useState<"idle" | "uploading">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onDropWrapped = useCallback<typeof onDrop>(
@@ -28,8 +36,10 @@ export function FileUploader({ onDrop, ...props }: FileUploaderProps) {
           typeof error.message === "string"
         ) {
           setErrorMessage(error.message);
+        } else {
+          setErrorMessage(GENERIC_UPLOAD_FAILED_ERROR);
         }
-        setStatus("error");
+        setStatus("idle");
       });
     },
     [onDrop]
@@ -37,18 +47,34 @@ export function FileUploader({ onDrop, ...props }: FileUploaderProps) {
 
   return (
     <div className="flex h-64 w-96">
-      {status === "idle" && <FileDropzone {...props} onDrop={onDropWrapped} />}
-      {status === "uploading" && <FileUploading progress={0.5} />}
+      {status === "idle" && (
+        <FileDropzone
+          {...props}
+          errorMessage={errorMessage}
+          onDrop={onDropWrapped}
+        />
+      )}
+      {status === "uploading" && <FileUploading progress={progress} />}
     </div>
   );
 }
 
-function FileDropzone({ kind, onDrop }: FileUploaderProps) {
+interface FileDropzoneProps extends Omit<FileUploaderProps, "progress"> {
+  errorMessage: string | null;
+}
+
+function FileDropzone({
+  onDrop,
+  accept,
+  maxSize,
+  uploadLabel,
+  errorMessage,
+}: FileDropzoneProps) {
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
     useDropzone({
-      onDropAccepted: (files) => void onDrop([files[0]!]),
-      multiple: false,
-      ...getDropzoneParams(kind),
+      onDropAccepted: (files) => void onDrop(files),
+      accept,
+      maxSize,
     });
 
   return (
@@ -81,31 +107,11 @@ function FileDropzone({ kind, onDrop }: FileUploaderProps) {
         >
           Browse or drop your file here
         </p>
-        <p className="text-secondary-foreground">{getUploadLabel(kind)}</p>
+        <p className="text-secondary-foreground">{uploadLabel}</p>
+        {errorMessage && <p className="text-destructive">{errorMessage}</p>}
       </div>
     </div>
   );
-}
-
-function getUploadLabel(kind: FileUploaderKind) {
-  switch (kind) {
-    case FileUploaderKind.Video:
-      return "MP4, file size no more than 1GB";
-  }
-}
-
-function getDropzoneParams(kind: FileUploaderKind) {
-  let accept: Accept;
-  let maxSize: number;
-
-  switch (kind) {
-    case FileUploaderKind.Video:
-      accept = { "video/mp4": [".mp4"] };
-      maxSize = 1 * 1024 ** 3; // 1 GB
-      break;
-  }
-
-  return { accept, maxSize } satisfies DropzoneOptions;
 }
 
 interface FileUploadingProps {
@@ -122,12 +128,10 @@ function FileUploading({ progress }: FileUploadingProps) {
     >
       <Icons.FileUpload className={cn("h-14 w-14 text-primary")} />
       <div className="flex flex-col gap-1 text-center">
-        <div className="mb-4 h-1.5 w-64 rounded-full bg-gray-200 dark:bg-gray-700">
-          <div
-            className="h-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
-            style={{ width: `${normalizeProgress(progress)}%` }}
-          />
-        </div>
+        <Progress
+          className="mb-4 h-1.5 w-64"
+          value={normalizeProgress(progress)}
+        />
         <p className="text-secondary-foreground">Uploading...</p>
       </div>
     </div>

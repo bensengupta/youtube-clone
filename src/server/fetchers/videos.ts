@@ -3,7 +3,6 @@ import { getBaseUrl } from "../utils/url";
 
 export interface OwnerFragment {
   name: string;
-  username: string;
   url: string;
   thumbnailUrl: string;
   badge?: "verified";
@@ -29,7 +28,6 @@ export async function getVideos(): Promise<VideoFragment[]> {
     thumbnailUrl: "http://dummyimage.com/720x404.png/cc0000/ffffff",
     owner: {
       ...video.owner,
-      username: video.owner.id,
       url: `${getBaseUrl()}/channel/${video.owner.id}`,
       thumbnailUrl: "https://picsum.photos/id/237/200/200",
     },

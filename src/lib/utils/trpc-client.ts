@@ -5,6 +5,7 @@
  * We also create a few inference helpers for input and output types.
  */
 import { type AppRouter } from "@/server/routers";
+import { getBaseUrl } from "@/server/utils/url";
 import {
   getFetch,
   httpBatchLink,
@@ -14,7 +15,6 @@ import {
 import { createTRPCReact } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
-import { getBaseUrl } from "./url";
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCReact<AppRouter>();
