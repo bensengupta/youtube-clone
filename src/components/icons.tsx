@@ -1,43 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export {
-  Bell as NotificationNone,
-  Menu,
-  Search,
-  Video as VideoUpload,
   X as Clear,
+  Shirt as FashionAndBeauty,
+  UploadCloud as FileUpload,
+  HelpCircle as Help,
+  History,
   Home,
-  Smartphone as YtShorts,
-  Rss as Subscriptions,
-  ListVideo as SongList,
+  FileX as InvalidFile,
+  Lightbulb as Learning,
+  Library,
   ThumbsUp as LikedVideos,
+  Radio as Live,
+  Menu,
+  Clapperboard as MoviesAndTV,
+  Music2 as Music,
+  Newspaper as News,
+  Bell as NotificationNone,
+  UserCircle2 as Profile,
+  Flag as Report,
+  Search,
+  MessageSquarePlus as SendFeedback,
+  Settings,
+  ListVideo as SongList,
+  Trophy as Sports,
+  Rss as Subscriptions,
+  Flame as Trending,
   Clock4 as WatchLater,
   PlaySquare as YourVideos,
-  History,
-  Library,
-  UserCircle2 as Profile,
-  Flame as Trending,
-  Music2 as Music,
-  Music2 as YtMusic,
-  Clapperboard as MoviesAndTV,
-  Radio as Live,
-  Gamepad as YtGaming,
-  Newspaper as News,
-  Trophy as Sports,
-  Lightbulb as Learning,
-  Shirt as FashionAndBeauty,
   Youtube,
-  MonitorPlay as YtStudio,
+  Gamepad as YtGaming,
   Baby as YtKids,
-  Settings,
-  Flag as Report,
-  HelpCircle as Help,
-  MessageSquarePlus as SendFeedback,
-  UploadCloud as FileUpload,
-  FileX as InvalidFile,
+  Music2 as YtMusic,
+  Smartphone as YtShorts,
+  MonitorPlay as YtStudio,
 } from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import * as React from "react";
 
-type IconProps = React.HTMLAttributes<SVGElement>;
+type IconProps = React.HTMLAttributes<HTMLSpanElement>;
 
-export const Logo = (props: IconProps) => (
+export function VideoUpload(props: IconProps) {
+  return (
+    <span
+      {...props}
+      className={cn("material-symbols-outlined", props.className)}
+    >
+      video_call
+    </span>
+  );
+}
+
+export const Logo = (props: React.HTMLAttributes<SVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 507.893 113.387"

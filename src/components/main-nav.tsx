@@ -1,21 +1,20 @@
-import * as React from "react";
 import Link from "next/link";
 
 import * as Icons from "@/components/icons";
+import { formatAvatarInitials } from "@/lib/utils/format";
+import { signIn, useSession } from "next-auth/react";
 import { ModeToggle } from "./mode-toggle";
-import { Button } from "./ui/button";
-import { Searchbar } from "./searchbar";
-import Image from "next/image";
 import { NavDrawerTrigger } from "./nav-drawer";
+import { Searchbar } from "./searchbar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 import {
   UserDropdownMenu,
   UserDropdownMenuContent,
   UserDropdownMenuTrigger,
 } from "./user-dropdown";
-import { signIn, useSession } from "next-auth/react";
-import { Skeleton } from "./ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { formatAvatarInitials } from "@/lib/utils/format";
+import { VideoUploadModalButton } from "./video-upload/video-upload-modal";
 
 export function MainNav() {
   const { data: session, status } = useSession();
@@ -42,9 +41,7 @@ export function MainNav() {
       </div>
       <div className="flex flex-shrink-0 items-center gap-2 text-sm font-medium">
         <ModeToggle />
-        <Button variant="ghost" size="icon">
-          <Icons.VideoUpload className="h-6 w-6" />
-        </Button>
+        <VideoUploadModalButton />
         <Button variant="ghost" size="icon">
           <Icons.NotificationNone className="h-6 w-6" />
         </Button>

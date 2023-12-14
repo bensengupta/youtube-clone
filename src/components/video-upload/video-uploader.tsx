@@ -2,7 +2,7 @@ import { FileUploader } from "@/components/file-uploader";
 import { MAX_VIDEO_SIZE_IN_BYTES } from "@/config/shared-constants";
 import { api } from "@/lib/utils/trpc-client";
 import { useState } from "react";
-import { useMultipartUploadController } from "./multipart-upload";
+import { multipartUpload } from "./multipart-upload";
 
 interface VideoUploaderProps {
   onUploadSuccess: (uploadKey: string) => void;
@@ -11,7 +11,6 @@ interface VideoUploaderProps {
 export function VideoUploader({ onUploadSuccess }: VideoUploaderProps) {
   const initiateVideoUpload = api.videos.initiateVideoUpload.useMutation();
   const completeVideoUpload = api.videos.completeVideoUpload.useMutation();
-  const { multipartUpload } = useMultipartUploadController();
 
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -20,8 +19,7 @@ export function VideoUploader({ onUploadSuccess }: VideoUploaderProps) {
     const [file] = files;
 
     if (!file) {
-      console.warn("VideoUploader onDrop expected a file");
-      return;
+      throw new Error("VideoUploader onDrop expected a file");
     }
 
     const { uploadKey, multipartUploadId, partSize, presignedUrls } =
@@ -51,12 +49,14 @@ export function VideoUploader({ onUploadSuccess }: VideoUploaderProps) {
     <p>{videoUrl}</p>
   ) : (
     <FileUploader
-      uploadLabel="MP4, file size no more than 1GB"
+      title="Drag and drop video files to upload"
+      uploadLabel="Your videos will be private until you publish them."
       accept={{ "video/mp4": [".mp4"] }}
       maxSize={MAX_VIDEO_SIZE_IN_BYTES}
       onDrop={onDrop}
       multiple={false}
       progress={progress}
+      size="lg"
     />
   );
 }

@@ -12,6 +12,7 @@ interface FileUploaderProps
    * Progress from 0 to 1
    */
   progress?: number;
+  title: string;
   uploadLabel: string;
   onDrop: (files: File[]) => Promise<void>;
 }
@@ -46,7 +47,7 @@ export function FileUploader({
   );
 
   return (
-    <div className="flex h-64 w-96">
+    <div className="flex h-[80vh] w-full">
       {status === "idle" && (
         <FileDropzone
           {...props}
@@ -59,7 +60,11 @@ export function FileUploader({
   );
 }
 
-interface FileDropzoneProps extends Omit<FileUploaderProps, "progress"> {
+interface FileDropzoneProps
+  extends Pick<
+    FileUploaderProps,
+    "onDrop" | "accept" | "maxSize" | "multiple" | "uploadLabel" | "title"
+  > {
   errorMessage: string | null;
 }
 
@@ -67,46 +72,25 @@ function FileDropzone({
   onDrop,
   accept,
   maxSize,
+  title,
   uploadLabel,
   errorMessage,
 }: FileDropzoneProps) {
-  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
-    useDropzone({
-      onDropAccepted: (files) => void onDrop(files),
-      accept,
-      maxSize,
-    });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDropAccepted: (files) => void onDrop(files),
+    accept,
+    maxSize,
+  });
 
   return (
     <div
-      className={cn(
-        "flex flex-1 cursor-pointer select-none flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-border p-4 transition-all duration-200 ease-out",
-        isDragAccept && "border-solid border-primary bg-primary/10",
-        isDragReject && "border-solid border-destructive bg-destructive/10"
-      )}
+      className="flex flex-1 cursor-pointer select-none flex-col items-center justify-center gap-4 rounded-md p-4 transition-all duration-200 ease-out"
       {...getRootProps()}
     >
       <input {...getInputProps()} />
-      {isDragReject ? (
-        <Icons.InvalidFile className={"h-14 w-14 text-destructive"} />
-      ) : (
-        <Icons.FileUpload
-          className={cn(
-            "h-14 w-14 text-secondary-foreground",
-            isDragAccept && "text-primary"
-          )}
-        />
-      )}
+      <Icons.FileUpload className="h-14 w-14 text-secondary-foreground" />
       <div className="flex flex-col gap-1 text-center">
-        <p
-          className={cn(
-            "font-medium",
-            isDragAccept && "text-primary",
-            isDragReject && "text-destructive"
-          )}
-        >
-          Browse or drop your file here
-        </p>
+        <p className="font-medium">{title}</p>
         <p className="text-secondary-foreground">{uploadLabel}</p>
         {errorMessage && <p className="text-destructive">{errorMessage}</p>}
       </div>
@@ -123,7 +107,7 @@ function FileUploading({ progress }: FileUploadingProps) {
   return (
     <div
       className={cn(
-        "flex flex-1 flex-col items-center justify-center gap-4 rounded-md border-2 border-border p-4"
+        "flex flex-1 flex-col items-center justify-center gap-4 rounded-md p-4"
       )}
     >
       <Icons.FileUpload className={cn("h-14 w-14 text-primary")} />
