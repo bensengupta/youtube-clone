@@ -19,7 +19,7 @@ export function VideoUploadModalButton() {
     <Modal>
       <ModalTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Icons.VideoUpload className="h-10 w-10" />
+          <Icons.VideoUpload className="h-6 w-6" />
         </Button>
       </ModalTrigger>
       <ModalContent>

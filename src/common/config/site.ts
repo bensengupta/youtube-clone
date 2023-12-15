@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "YT Clone",
+  name: "Youtube",
   url: "https://yt-clone.bensengupta.com",
   ogImage: "https://yt-clone.bensengupta.com/og.jpg",
   description: "Share videos painlessly.",

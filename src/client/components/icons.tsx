@@ -1,56 +1,92 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export {
-  X as Clear,
-  Shirt as FashionAndBeauty,
-  UploadCloud as FileUpload,
-  HelpCircle as Help,
-  History,
-  Home,
-  FileX as InvalidFile,
-  Lightbulb as Learning,
-  Library,
-  ThumbsUp as LikedVideos,
-  Radio as Live,
-  Menu,
-  Clapperboard as MoviesAndTV,
-  Music2 as Music,
-  Newspaper as News,
-  Bell as NotificationNone,
-  UserCircle2 as Profile,
-  Flag as Report,
-  Search,
-  MessageSquarePlus as SendFeedback,
-  Settings,
-  ListVideo as SongList,
-  Trophy as Sports,
-  Rss as Subscriptions,
-  Flame as Trending,
-  Clock4 as WatchLater,
-  PlaySquare as YourVideos,
-  Youtube,
-  Gamepad as YtGaming,
-  Baby as YtKids,
-  Music2 as YtMusic,
-  Smartphone as YtShorts,
-  MonitorPlay as YtStudio,
-} from "lucide-react";
-import { cn } from "@/src/client/utils/cn";
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import * as React from "react";
+import { cn } from "../utils/cn";
 
-type IconProps = React.HTMLAttributes<HTMLSpanElement>;
+import AccountBoxIcon from "@material-symbols/svg-400/outlined/account_box.svg";
+import AccountCircleIcon from "@material-symbols/svg-400/outlined/account_circle.svg";
+import CloseIcon from "@material-symbols/svg-400/outlined/close.svg";
+import ErrorIcon from "@material-symbols/svg-400/outlined/error.svg";
+import FeedbackIcon from "@material-symbols/svg-400/outlined/feedback.svg";
+import FlagIcon from "@material-symbols/svg-400/outlined/flag.svg";
+import HelpIcon from "@material-symbols/svg-400/outlined/help.svg";
+import HistoryIcon from "@material-symbols/svg-400/outlined/history.svg";
+import HomeIcon from "@material-symbols/svg-400/outlined/home.svg";
+import LightbulbIcon from "@material-symbols/svg-400/outlined/lightbulb.svg";
+import MenuIcon from "@material-symbols/svg-400/outlined/menu.svg";
+import ModeHeatIcon from "@material-symbols/svg-400/outlined/mode_heat.svg";
+import MovieIcon from "@material-symbols/svg-400/outlined/movie.svg";
+import MusicNoteIcon from "@material-symbols/svg-400/outlined/music_note.svg";
+import NewsmodeIcon from "@material-symbols/svg-400/outlined/newsmode.svg";
+import NotificationsIcon from "@material-symbols/svg-400/outlined/notifications.svg";
+import PlaylistPlayIcon from "@material-symbols/svg-400/outlined/playlist_play.svg";
+import PodcastsIcon from "@material-symbols/svg-400/outlined/podcasts.svg";
+import ScheduleIcon from "@material-symbols/svg-400/outlined/schedule.svg";
+import SearchIcon from "@material-symbols/svg-400/outlined/search.svg";
+import SensorsIcon from "@material-symbols/svg-400/outlined/sensors.svg";
+import SettingsIcon from "@material-symbols/svg-400/outlined/settings.svg";
+import SlideshowIcon from "@material-symbols/svg-400/outlined/slideshow.svg";
+import StylerIcon from "@material-symbols/svg-400/outlined/styler.svg";
+import SubscriptionsIcon from "@material-symbols/svg-400/outlined/subscriptions.svg";
+import ThumbUpIcon from "@material-symbols/svg-400/outlined/thumb_up.svg";
+import TrophyIcon from "@material-symbols/svg-400/outlined/trophy.svg";
+import UploadIcon from "@material-symbols/svg-400/outlined/upload.svg";
+import VideoCallIcon from "@material-symbols/svg-400/outlined/video_call.svg";
 
-export function VideoUpload(props: IconProps) {
-  return (
-    <span
-      {...props}
-      className={cn("material-symbols-outlined", props.className)}
-    >
-      video_call
-    </span>
-  );
+import YoutubeGamingIcon from "@/src/client/assets/youtube-gaming.svg";
+import YoutubeKidsIcon from "@/src/client/assets/youtube-kids.svg";
+import YoutubeMusicIcon from "@/src/client/assets/youtube-music.svg";
+import YoutubeShortsIcon from "@/src/client/assets/youtube-shorts.svg";
+import YoutubeStudioIcon from "@/src/client/assets/youtube-studio.svg";
+import YoutubeIcon from "@/src/client/assets/youtube.svg";
+
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+function wrapIcon(Icon: React.FC<IconProps>) {
+  return function WrappedIcon({ className, ...props }: IconProps) {
+    return <Icon {...props} className={cn("fill-[currentColor]", className)} />;
+  };
 }
 
-export const Logo = (props: React.HTMLAttributes<SVGElement>) => (
+const GenericError = wrapIcon(ErrorIcon);
+
+export const VideoUpload = wrapIcon(VideoCallIcon);
+export const Clear = wrapIcon(CloseIcon);
+export const FashionAndBeauty = wrapIcon(StylerIcon);
+export const FileUpload = wrapIcon(UploadIcon);
+export const Help = wrapIcon(HelpIcon);
+export const History = wrapIcon(HistoryIcon);
+export const Home = wrapIcon(HomeIcon);
+export const InvalidFile = GenericError;
+export const Learning = wrapIcon(LightbulbIcon);
+export const AccountBox = wrapIcon(AccountBoxIcon);
+export const LikedVideos = wrapIcon(ThumbUpIcon);
+export const Podcasts = wrapIcon(PodcastsIcon);
+export const Live = wrapIcon(SensorsIcon);
+export const Menu = wrapIcon(MenuIcon);
+export const MoviesAndTV = wrapIcon(MovieIcon);
+export const Music = wrapIcon(MusicNoteIcon);
+export const News = wrapIcon(NewsmodeIcon);
+export const NotificationNone = wrapIcon(NotificationsIcon);
+export const Profile = wrapIcon(AccountCircleIcon);
+export const Report = wrapIcon(FlagIcon);
+export const Search = wrapIcon(SearchIcon);
+export const SendFeedback = wrapIcon(FeedbackIcon);
+export const Settings = wrapIcon(SettingsIcon);
+export const SongList = wrapIcon(PlaylistPlayIcon);
+export const Sports = wrapIcon(TrophyIcon);
+export const Subscriptions = wrapIcon(SubscriptionsIcon);
+export const Trending = wrapIcon(ModeHeatIcon);
+export const WatchLater = wrapIcon(ScheduleIcon);
+export const YourVideos = wrapIcon(SlideshowIcon);
+
+export const Youtube = wrapIcon(YoutubeIcon);
+export const YtKids = wrapIcon(YoutubeKidsIcon);
+export const YtMusic = wrapIcon(YoutubeMusicIcon);
+export const YtStudio = wrapIcon(YoutubeStudioIcon);
+export const YtShorts = wrapIcon(YoutubeShortsIcon);
+export const YtGaming = wrapIcon(YoutubeGamingIcon);
+
+export const Logo = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 507.893 113.387"

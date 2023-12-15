@@ -85,9 +85,9 @@ export function NavDrawerContent({ onClickLink }: NavDrawerContentProps) {
         </div>
 
         <div className="flex flex-col border-t border-border p-3">
-          <NavItem href="/feed/library" onClickLink={onClickLink}>
-            <Icons.Library className="h-6 w-6" />
-            Library
+          <NavItem href="#" onClickLink={onClickLink}>
+            <Icons.AccountBox className="h-6 w-6" />
+            Your videos
           </NavItem>
           <NavItem href="#" onClickLink={onClickLink}>
             <Icons.History className="h-6 w-6" />
@@ -156,6 +156,10 @@ export function NavDrawerContent({ onClickLink }: NavDrawerContentProps) {
           <NavItem href="#" onClickLink={onClickLink}>
             <Icons.FashionAndBeauty className="h-6 w-6" />
             Fashion & Beauty
+          </NavItem>
+          <NavItem href="#" onClickLink={onClickLink}>
+            <Icons.Podcasts className="h-6 w-6" />
+            Podcasts
           </NavItem>
         </div>
 
