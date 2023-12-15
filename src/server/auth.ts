@@ -1,4 +1,4 @@
-import { env } from "@/env.mjs";
+import { env } from "@/src/env.mjs";
 import { type DefaultSession, type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "./db/adapter";

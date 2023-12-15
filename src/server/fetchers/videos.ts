@@ -1,3 +1,4 @@
+import { sleep } from "@/src/common/utils/utils";
 import { db } from "../db";
 import { getBaseUrl } from "../utils/url";
 
@@ -20,6 +21,8 @@ export interface VideoFragment {
 }
 
 export async function getVideos(): Promise<VideoFragment[]> {
+  await sleep(3000);
+
   const videos = await db.query.videos.findMany({ with: { owner: true } });
 
   const videosWithThumbnails: VideoFragment[] = videos.map((video) => ({

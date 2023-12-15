@@ -1,7 +1,7 @@
 import { connect } from "@planetscale/database";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 
-import { env } from "@/env.mjs";
+import { env } from "@/src/env.mjs";
 import * as AuthSchema from "./schema/auth";
 import * as UploadSchema from "./schema/uploads";
 import * as VideoSchema from "./schema/videos";

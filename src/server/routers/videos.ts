@@ -2,11 +2,11 @@ import {
   FILE_PART_SIZE,
   MAX_VIDEO_SIZE_IN_BYTES,
   VIDEO_VALID_MIMETYPES,
-} from "@/config/shared-constants";
+} from "@/src/common/config/shared-constants";
 import {
   createTRPCRouter,
   protectedProcedure,
-} from "@/server/utils/trpc-server";
+} from "@/src/server/utils/trpc-server";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
