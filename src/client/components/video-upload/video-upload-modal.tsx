@@ -12,7 +12,7 @@ import {
   ModalTitle,
   ModalTrigger,
 } from "../ui/modal";
-import { VideoUploader } from "./video-uploader";
+import { VideoUpload } from "./video-upload";
 
 export function VideoUploadModalButton() {
   return (
@@ -29,7 +29,7 @@ export function VideoUploadModalButton() {
             <ModalClose>Cancel</ModalClose>
           </ModalPrimaryHeader>
         </ModalHeader>
-        <VideoUploader onUploadSuccess={console.log} />
+        <VideoUpload />
         <ModalFooter></ModalFooter>
       </ModalContent>
     </Modal>

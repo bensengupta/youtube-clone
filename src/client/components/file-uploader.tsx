@@ -19,13 +19,9 @@ interface FileUploaderProps {
   onDrop: (files: File[]) => Promise<void>;
 }
 
-export function FileUploader({
-  onDrop,
-  progress = 0,
-  ...props
-}: FileUploaderProps) {
+function FileUploader({ onDrop, progress = 0, ...props }: FileUploaderProps) {
   const [status, setStatus] = useState<"idle" | "uploading">("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const onDropWrapped = useCallback<typeof onDrop>(
     async (files) => {
@@ -67,10 +63,10 @@ interface FileDropzoneProps
     FileUploaderProps,
     "onDrop" | "accept" | "maxSize" | "multiple" | "uploadLabel" | "title"
   > {
-  errorMessage: string | null;
+  errorMessage?: string;
 }
 
-function FileDropzone({
+export function FileDropzone({
   onDrop,
   accept,
   maxSize,

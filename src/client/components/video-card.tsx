@@ -52,9 +52,11 @@ export function VideoCard({ video }: VideoCardProps) {
             fill
             unoptimized
           />
-          <span className="absolute bottom-0 right-0 z-10 m-1 rounded-sm bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
-            {formatVideoLength(video.length)}
-          </span>
+          {video.metadata ? (
+            <span className="absolute bottom-0 right-0 z-10 m-1 rounded-sm bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
+              {formatVideoLength(video.metadata.length)}
+            </span>
+          ) : null}
         </Link>
       </div>
       <div className="flex gap-3">
