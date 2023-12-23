@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 import * as React from "react";
 import { cn } from "../utils/cn";
 
@@ -79,10 +81,10 @@ export const Trending = wrapIcon(ModeHeatIcon);
 export const WatchLater = wrapIcon(ScheduleIcon);
 export const YourVideos = wrapIcon(SlideshowIcon);
 
-export const Youtube = wrapIcon(YoutubeIcon);
-export const YtKids = wrapIcon(YoutubeKidsIcon);
-export const YtMusic = wrapIcon(YoutubeMusicIcon);
-export const YtStudio = wrapIcon(YoutubeStudioIcon);
+export const Youtube = YoutubeIcon;
+export const YtKids = YoutubeKidsIcon;
+export const YtMusic = YoutubeMusicIcon;
+export const YtStudio = YoutubeStudioIcon;
 export const YtShorts = wrapIcon(YoutubeShortsIcon);
 export const YtGaming = wrapIcon(YoutubeGamingIcon);
 

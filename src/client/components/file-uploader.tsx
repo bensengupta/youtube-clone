@@ -88,8 +88,8 @@ export function FileDropzone({
       <input {...getInputProps()} />
       <Icons.FileUpload className="h-14 w-14 text-secondary-foreground" />
       <div className="flex flex-col gap-1 text-center">
-        <p className="font-medium">{title}</p>
-        <p className="text-secondary-foreground">{uploadLabel}</p>
+        <p>{title}</p>
+        <p className="text-sm text-secondary-foreground">{uploadLabel}</p>
         {errorMessage && <p className="text-destructive">{errorMessage}</p>}
       </div>
     </div>

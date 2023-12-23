@@ -4,6 +4,7 @@ import {
   VIDEO_VALID_MIMETYPES,
 } from "@/src/common/config/shared-constants";
 import { VideoProcessingStatus, VideoStatus } from "@/src/common/constants";
+import { getVideoWatchUrl } from "@/src/common/utils/urls";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -46,6 +47,7 @@ export const videosRouter = createTRPCRouter({
         title,
         ownerId: userId,
         status: VideoStatus.Draft,
+        filename: input.filename,
         uploadKey,
         processingStatus: VideoProcessingStatus.Uploading,
       };
@@ -67,7 +69,10 @@ export const videosRouter = createTRPCRouter({
       });
 
       return {
-        video,
+        video: {
+          ...video,
+          url: getVideoWatchUrl(video.id),
+        },
         multipartUploadId,
         presignedUrls,
         partSize,

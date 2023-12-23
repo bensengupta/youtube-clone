@@ -15,6 +15,7 @@ export default {
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
+        divider: "hsl(var(--divider))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -37,7 +38,7 @@ export default {
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
-          transparent: "hsla(var(--accent-transparent))",
+          transparent: "hsl(var(--accent-transparent))",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
@@ -47,6 +48,10 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        "modal-background": {
+          DEFAULT: "hsl(var(--modal-background))",
+          alt: "hsl(var(--modal-background-alt))",
         },
       },
       borderRadius: {

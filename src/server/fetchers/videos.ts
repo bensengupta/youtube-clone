@@ -1,5 +1,5 @@
+import { getUserChannelUrl, getVideoWatchUrl } from "@/src/common/utils/urls";
 import { db } from "../db";
-import { getBaseUrl } from "../utils/url";
 
 export interface OwnerFragment {
   name: string;
@@ -35,12 +35,12 @@ export async function getVideos(): Promise<VideoFragment[]> {
     title: video.title,
     viewCount: video.viewCount,
     publishedAt: video.publishedAt,
-    url: `${getBaseUrl()}/watch/${video.id}`,
+    url: getVideoWatchUrl(video.id),
     thumbnailUrl: "http://dummyimage.com/720x404.png/cc0000/ffffff",
     owner: {
       id: video.owner.id,
       name: video.owner.name,
-      url: `${getBaseUrl()}/channel/${video.owner.id}`,
+      url: getUserChannelUrl(video.owner.id),
       thumbnailUrl: "https://picsum.photos/id/237/200/200",
     },
     metadata: video.metadata,

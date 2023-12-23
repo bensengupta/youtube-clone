@@ -1,15 +1,13 @@
 import type { NewVideo } from "@/src/common/types";
 import { useState } from "react";
-import { useVideoUploadLifecycle } from "./video-upload-controller";
-import { VideoUploadStepOne } from "./video-upload-step-one";
-import { VideoUploadStepTwo } from "./video-upload-step-two";
+import { useVideoUploadLifecycle } from "./video-upload-lifecycle";
 
 export interface ProcessingState {
-  status: "idle" | "uploading" | "processing";
+  status: "idle" | "uploading" | "processing" | "complete";
   progress?: number;
 }
 
-export function VideoUpload() {
+export function useVideoUploadController() {
   const [step, setStep] = useState(1);
   const [processingState, setProcessingState] = useState<ProcessingState>({
     status: "idle",
@@ -34,12 +32,5 @@ export function VideoUpload() {
     onFinishUpload,
   });
 
-  return (
-    <>
-      {step === 1 && <VideoUploadStepOne onDrop={onDrop} />}
-      {step === 2 && (
-        <VideoUploadStepTwo processingState={processingState} video={video!} />
-      )}
-    </>
-  );
+  return { step, onDrop, processingState, video };
 }

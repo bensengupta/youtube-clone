@@ -4,8 +4,8 @@
  *
  * We also create a few inference helpers for input and output types.
  */
+import { getBaseUrl } from "@/src/common/utils/urls";
 import { type AppRouter } from "@/src/server/routers";
-import { getBaseUrl } from "@/src/server/utils/url";
 import {
   getFetch,
   httpBatchLink,
