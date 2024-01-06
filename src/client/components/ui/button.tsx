@@ -5,12 +5,12 @@ import * as React from "react";
 import { cn } from "@/src/client/utils/cn";
 
 const buttonVariants = cva(
-  "inline-flex items-center rounded-[2px] uppercase select-none text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none",
+  "inline-flex items-center rounded-lg select-none text-sm ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary/80 focus-visible:bg-primary/80",
+          "bg-primary text-primary-foreground font-medium uppercase rounded-[2px] hover:bg-primary/80 focus-visible:bg-primary/80",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:bg-destrictive/90",
         outline:

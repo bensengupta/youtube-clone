@@ -12,12 +12,12 @@ import {
   ModalTrigger,
 } from "../ui/modal";
 import { useVideoUploadController } from "./video-upload-contoller";
-import { VideoUploadModalFooter } from "./video-upload-modal-footer";
 import { VideoUploadStepOne } from "./video-upload-step-one";
 import { VideoUploadStepTwo } from "./video-upload-step-two";
 
 export function VideoUploadModalButton() {
-  const { step, onDrop, processingState, video } = useVideoUploadController();
+  const { step, onDrop, processingState, video, onSubmit } =
+    useVideoUploadController();
   return (
     <Modal>
       <ModalTrigger asChild>
@@ -33,8 +33,12 @@ export function VideoUploadModalButton() {
           </ModalPrimaryHeader>
         </ModalHeader>
         {step === 1 && <VideoUploadStepOne onDrop={onDrop} />}
-        {step === 2 && <VideoUploadStepTwo video={video!} />}
-        <VideoUploadModalFooter processingState={processingState} />
+        {step === 2 && (
+          <VideoUploadStepTwo
+            processingState={processingState}
+            video={video!}
+          />
+        )}
       </ModalContent>
     </Modal>
   );

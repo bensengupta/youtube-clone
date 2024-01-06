@@ -4,7 +4,7 @@ import {
   formatVideoLength,
   formatViewCount,
 } from "@/src/client/utils/format";
-import type { VideoFragment } from "@/src/server/fetchers/videos";
+import type { VideoFragmentForList } from "@/src/server/fetchers/videos";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export function VideoCardSkeleton() {
   return (
-    <div className="active flex flex-1 flex-col gap-[10px] rounded-sm p-1">
+    <div className="flex flex-1 flex-col gap-[10px] rounded-sm p-1">
       <div className="relative flex aspect-video w-full overflow-hidden rounded-md">
         <Skeleton className="flex-1" />
       </div>
@@ -31,7 +31,7 @@ export function VideoCardSkeleton() {
 }
 
 interface VideoCardProps {
-  video: VideoFragment;
+  video: VideoFragmentForList;
 }
 
 export function VideoCard({ video }: VideoCardProps) {

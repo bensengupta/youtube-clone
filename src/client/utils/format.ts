@@ -48,40 +48,48 @@ export function formatPublishedAtDate(publishedAt: Date) {
   return intlFormatDistance(publishedAt, today, { unit: "year", ...options });
 }
 
-export function formatViewCount(viewCount: number) {
+function formatNumeric(num: number) {
   // 123 => 123
-  if (viewCount < 1e3) {
-    return `${viewCount}`;
+  if (num < 1e3) {
+    return `${num}`;
   }
 
   // 123000 => 123K
-  if (viewCount < 1e6) {
-    let thousands = Math.floor(viewCount / 1e3);
+  if (num < 1e6) {
+    let thousands = Math.floor(num / 1e3);
     if (thousands < 10) {
-      thousands = Math.floor(viewCount / 1e2) / 10;
+      thousands = Math.floor(num / 1e2) / 10;
     }
     return `${thousands}K`;
   }
 
   // 123000000 => 123M
-  if (viewCount < 1e9) {
-    let millions = Math.floor(viewCount / 1e6);
+  if (num < 1e9) {
+    let millions = Math.floor(num / 1e6);
     if (millions < 10) {
-      millions = Math.floor(viewCount / 1e5) / 10;
+      millions = Math.floor(num / 1e5) / 10;
     }
     return `${millions}M`;
   }
 
   // 123000000000 => 123B
-  if (viewCount < 1e12) {
-    let billions = Math.floor(viewCount / 1e9);
+  if (num < 1e12) {
+    let billions = Math.floor(num / 1e9);
     if (billions < 10) {
-      billions = Math.floor(viewCount / 1e8) / 10;
+      billions = Math.floor(num / 1e8) / 10;
     }
     return `${billions}B`;
   }
 
   return `999B+`;
+}
+
+export function formatViewCount(viewCount: number) {
+  return formatNumeric(viewCount);
+}
+
+export function formatSubscriberCount(subscriberCount: number) {
+  return formatNumeric(subscriberCount);
 }
 
 export function formatVideoLength(length: string) {

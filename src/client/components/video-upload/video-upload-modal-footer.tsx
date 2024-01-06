@@ -14,7 +14,7 @@ export function VideoUploadModalFooter(props: VideoUploadModalFooterProps) {
   return (
     <ModalFooter>
       <p className="flex-1">{formatLabel(props.processingState)}</p>
-      <Button>Next</Button>
+      <Button type="submit">Next</Button>
     </ModalFooter>
   );
 }

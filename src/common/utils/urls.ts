@@ -11,3 +11,7 @@ export function getVideoWatchUrl(videoId: string) {
 export function getUserChannelUrl(userId: string) {
   return `${getBaseUrl()}/channel/${userId}`;
 }
+
+export function getVideoFileUrl(uploadKey: string) {
+  return `https://r2.yt-clone.bensengupta.com/${uploadKey}`;
+}

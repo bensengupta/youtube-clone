@@ -72,6 +72,7 @@ export const users = mysqlTable(
     name: varchar("name", { length: 191 }).notNull(),
     email: varchar("email", { length: 191 }).notNull(),
     emailVerified: timestamp("email_verified"),
+    subscriberCount: int("subscriber_count").notNull().default(0),
     image: varchar("image", { length: 191 }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),

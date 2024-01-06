@@ -15,11 +15,11 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 import { videos } from "../db/schema/videos";
 import {
-  ObjectPrefix,
   completeVideoMultipartUpload,
   createUploadKey,
   getVideoUploadPartPresignedUrls,
   initiateVideoMultipartUpload,
+  ObjectPrefix,
 } from "../s3";
 
 export const videosRouter = createTRPCRouter({
@@ -29,7 +29,7 @@ export const videosRouter = createTRPCRouter({
         filename: z.string(),
         fileSize: z.number().int(),
         contentType: z.enum(VIDEO_VALID_MIMETYPES),
-      })
+      }),
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;
@@ -85,7 +85,46 @@ export const videosRouter = createTRPCRouter({
         videoId: z.string(),
         multipartUploadId: z.string(),
         parts: z.array(z.object({ PartNumber: z.number(), ETag: z.string() })),
-      })
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.session.user.id;
+
+      const video = await ctx.db.query.videos.findFirst({
+        where: eq(videos.id, input.videoId),
+        columns: { uploadKey: true, ownerId: true },
+      });
+
+      if (!video) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No video with the given video id",
+        });
+      }
+
+      if (video.ownerId !== userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      await completeVideoMultipartUpload({
+        multipartUploadId: input.multipartUploadId,
+        uploadKey: video.uploadKey,
+        parts: input.parts,
+      });
+
+      await ctx.db
+        .update(videos)
+        .set({ processingStatus: VideoProcessingStatus.Processing })
+        .where(eq(videos.id, input.videoId));
+    }),
+
+  updateVideoDetails: protectedProcedure
+    .input(
+      z.object({
+        videoId: z.string(),
+        title: z.string(),
+        description: z.string(),
+      }),
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;
