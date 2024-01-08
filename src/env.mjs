@@ -28,6 +28,7 @@ export const env = createEnv({
     CLOUDFLARE_R2_ACCOUNT_ID: z.string().min(1),
     CLOUDFLARE_R2_ACCESS_KEY_ID: z.string().min(1),
     CLOUDFLARE_R2_SECRET_ACCESS_KEY: z.string().min(1),
+    VIDEO_WORKER_SECRET: z.string().min(1),
   },
 
   /**
@@ -56,6 +57,7 @@ export const env = createEnv({
     CLOUDFLARE_R2_ACCOUNT_ID: process.env.CLOUDFLARE_R2_ACCOUNT_ID,
     CLOUDFLARE_R2_ACCESS_KEY_ID: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID,
     CLOUDFLARE_R2_SECRET_ACCESS_KEY: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
+    VIDEO_WORKER_SECRET: process.env.VIDEO_WORKER_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

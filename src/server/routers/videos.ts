@@ -4,7 +4,11 @@ import {
   VIDEO_VALID_MIMETYPES,
 } from "@/src/common/config/shared-constants";
 import { VideoProcessingStatus, VideoStatus } from "@/src/common/constants";
-import { getVideoWatchUrl } from "@/src/common/utils/urls";
+import {
+  getVideoFileUrl,
+  getVideoWatchUrl,
+  getVideoWorkerCallbackUrl,
+} from "@/src/common/utils/urls";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -15,11 +19,11 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 import { videos } from "../db/schema/videos";
 import {
+  ObjectPrefix,
   completeVideoMultipartUpload,
   createUploadKey,
   getVideoUploadPartPresignedUrls,
   initiateVideoMultipartUpload,
-  ObjectPrefix,
 } from "../s3";
 
 export const videosRouter = createTRPCRouter({
@@ -29,7 +33,7 @@ export const videosRouter = createTRPCRouter({
         filename: z.string(),
         fileSize: z.number().int(),
         contentType: z.enum(VIDEO_VALID_MIMETYPES),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;
@@ -85,7 +89,7 @@ export const videosRouter = createTRPCRouter({
         videoId: z.string(),
         multipartUploadId: z.string(),
         parts: z.array(z.object({ PartNumber: z.number(), ETag: z.string() })),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;
@@ -112,6 +116,11 @@ export const videosRouter = createTRPCRouter({
         parts: input.parts,
       });
 
+      const downloadUrl = getVideoFileUrl(video.uploadKey);
+      const callbackUrl = getVideoWorkerCallbackUrl(input.videoId);
+
+      console.log(`DOWNLOAD_URL=${downloadUrl} CALLBACK_URL=${callbackUrl}`);
+
       await ctx.db
         .update(videos)
         .set({ processingStatus: VideoProcessingStatus.Processing })
@@ -124,7 +133,7 @@ export const videosRouter = createTRPCRouter({
         videoId: z.string(),
         title: z.string(),
         description: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user.id;

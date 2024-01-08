@@ -1,3 +1,5 @@
+import { env } from "@/src/env.mjs";
+
 export function getBaseUrl() {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
@@ -14,4 +16,10 @@ export function getUserChannelUrl(userId: string) {
 
 export function getVideoFileUrl(uploadKey: string) {
   return `https://r2.yt-clone.bensengupta.com/${uploadKey}`;
+}
+
+export function getVideoWorkerCallbackUrl(videoId: string) {
+  return `${getBaseUrl()}/api/video-worker/${
+    env.VIDEO_WORKER_SECRET
+  }/${videoId}`;
 }
