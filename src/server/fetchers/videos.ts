@@ -1,12 +1,13 @@
 import {
+  getR2FileUrl,
   getUserChannelUrl,
-  getVideoFileUrl,
   getVideoWatchUrl,
 } from "@/src/common/utils/urls";
 import { sleep } from "@/src/common/utils/utils";
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { videos as videosSchema } from "../db/schema/videos";
+import { ObjectKind } from "../s3";
 
 export interface OwnerFragment {
   name: string;
@@ -46,7 +47,7 @@ export async function getVideosForList(): Promise<VideoFragmentForList[]> {
     viewCount: video.viewCount,
     publishedAt: video.publishedAt,
     url: getVideoWatchUrl(video.id),
-    thumbnailUrl: "http://dummyimage.com/720x404.png/cc0000/ffffff",
+    thumbnailUrl: getR2FileUrl(`${ObjectKind.Video}/${video.id}/thumbnail.jpg`),
     owner: {
       id: video.owner.id,
       name: video.owner.name,
@@ -75,7 +76,6 @@ export async function getVideoForWatch(id: string) {
       title: true,
       publishedAt: true,
       viewCount: true,
-      uploadKey: true,
     },
     where: eq(videosSchema.id, id),
   });
@@ -90,8 +90,13 @@ export async function getVideoForWatch(id: string) {
     viewCount: video.viewCount,
     publishedAt: video.publishedAt,
     url: getVideoWatchUrl(video.id),
-    fileUrl: getVideoFileUrl(video.uploadKey),
-    thumbnailUrl: "http://dummyimage.com/720x404.png/cc0000/ffffff",
+    dashManifestUrl: getR2FileUrl(
+      `${ObjectKind.Video}/${video.id}/manifest.mpd`
+    ),
+    hlsManifestUrl: getR2FileUrl(
+      `${ObjectKind.Video}/${video.id}/manifest.m3u8`
+    ),
+    thumbnailUrl: getR2FileUrl(`${ObjectKind.Video}/${video.id}/thumbnail.jpg`),
     owner: {
       name: video.owner.name,
       url: getUserChannelUrl(video.owner.id),

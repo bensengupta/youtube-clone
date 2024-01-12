@@ -2,6 +2,7 @@ import { FILE_PART_SIZE } from "@/src/common/config/shared-constants";
 import { db } from "@/src/server/db";
 import { videos } from "@/src/server/db/schema/videos";
 import {
+  ObjectKind,
   completeVideoMultipartUpload,
   getVideoUploadPartPresignedUrls,
   initiateVideoMultipartUpload,
@@ -14,22 +15,22 @@ export async function POST(
   { params }: { params: { videoId: string; event: string } }
 ) {
   switch (params.event) {
-    case "request-quality-upload":
-      return await handleRequestQualityUploadEvent(request, params);
-    case "finish-quality-upload":
-      return await handleFinishQualityUploadEvent(request, params);
+    case "request-file-upload":
+      return await handleRequestFileUploadEvent(request, params);
+    case "finish-file-upload":
+      return await handleFinishFileUploadEvent(request, params);
     default:
       return new Response(`Invalid event '${params.event}'`, { status: 400 });
   }
 }
 
 const RequestUploadBodySchema = z.object({
-  quality_name: z.string().max(20),
-  content_type: z.string().max(20),
+  file_name: z.string().max(50),
+  content_type: z.string().max(50).optional(),
   file_size: z.number().int(),
 });
 
-async function handleRequestQualityUploadEvent(
+async function handleRequestFileUploadEvent(
   request: Request,
   params: { videoId: string }
 ): Promise<Response> {
@@ -38,7 +39,7 @@ async function handleRequestQualityUploadEvent(
 
   const video = await db.query.videos.findFirst({
     where: eq(videos.id, params.videoId),
-    columns: { uploadKey: true },
+    columns: { id: true },
   });
 
   if (!video) {
@@ -47,7 +48,7 @@ async function handleRequestQualityUploadEvent(
     });
   }
 
-  const uploadKey = `${video.uploadKey}-${input.quality_name}`;
+  const uploadKey = `${ObjectKind.Video}/${params.videoId}/${input.file_name}`;
 
   const multipartUploadId = await initiateVideoMultipartUpload({
     uploadKey,
@@ -82,7 +83,7 @@ const FinishUploadBodySchema = z.object({
   ),
 });
 
-async function handleFinishQualityUploadEvent(
+async function handleFinishFileUploadEvent(
   request: Request,
   params: { videoId: string }
 ): Promise<Response> {

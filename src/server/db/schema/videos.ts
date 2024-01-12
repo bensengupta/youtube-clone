@@ -30,7 +30,6 @@ export const videos = mysqlTable("videos", {
     .default(VideoVisibility.Unlisted),
   filename: varchar("filename", { length: 256 }).notNull(),
   ownerId: varchar("owner_id", { length: 191 }).notNull(),
-  uploadKey: varchar("upload_key", { length: 191 }).notNull(),
   viewCount: int("view_count").notNull().default(0),
   publishedAt: timestamp("published_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),

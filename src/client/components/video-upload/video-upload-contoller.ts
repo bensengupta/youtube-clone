@@ -1,5 +1,5 @@
 import type { NewVideo } from "@/src/common/types";
-import { FormEvent, useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useVideoUploadLifecycle } from "./video-upload-lifecycle";
 
 export interface ProcessingState {

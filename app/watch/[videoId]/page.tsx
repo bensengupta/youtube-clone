@@ -8,15 +8,17 @@ import { VideoSection, VideoSectionSkeleton } from "./video-section";
 
 export default function Page({ params }: { params: { videoId: string } }) {
   return (
-    <div className="flex flex-col gap-6 p-6 lg:flex-row">
-      <Suspense fallback={<VideoSectionSkeleton />}>
-        <VideoSection videoId={params.videoId} />
-      </Suspense>
-      <aside className="w-96">
-        <Suspense fallback={<RelatedVideosSkeleton />}>
-          <RelatedVideos />
+    <div className="flex flex-1 justify-center">
+      <div className="flex max-w-screen-2xl flex-1 flex-col gap-6 p-6 lg:flex-row">
+        <Suspense fallback={<VideoSectionSkeleton />}>
+          <VideoSection videoId={params.videoId} />
         </Suspense>
-      </aside>
+        <aside className="w-96">
+          <Suspense fallback={<RelatedVideosSkeleton />}>
+            <RelatedVideos />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }

@@ -40,7 +40,7 @@ export function VideoCardCompact({ video }: VideoCardCompactProps) {
       tabIndex={-1}
       className="flex flex-1 cursor-pointer gap-[10px] rounded-sm p-1 transition-colors active:bg-accent-transparent"
     >
-      <div className="relative flex aspect-video w-40 overflow-hidden rounded-md">
+      <div className="relative flex aspect-video w-40 overflow-hidden rounded-md border-[1px]">
         <Link href={video.url} aria-hidden tabIndex={-1}>
           <Image
             src={video.thumbnailUrl}

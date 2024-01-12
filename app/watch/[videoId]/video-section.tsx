@@ -6,13 +6,18 @@ import {
 import { Button } from "@/src/client/components/ui/button";
 import { Skeleton } from "@/src/client/components/ui/skeleton";
 import { Heading1 } from "@/src/client/components/ui/typography/headings";
-import { VideoPlayer } from "@/src/client/components/video-player";
 import { formatSubscriberCount } from "@/src/client/utils/format";
 import {
   getVideoForWatch,
   type VideoFragmentForWatch,
 } from "@/src/server/fetchers/videos";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
+
+const VideoPlayer = dynamic(
+  () => import("@/src/client/components/video-player"),
+  { ssr: false }
+);
 
 export function VideoSectionSkeleton() {
   return (
@@ -42,7 +47,11 @@ export async function VideoSection(props: VideoSectionProps) {
 
   return (
     <main className="flex flex-1 flex-col gap-3">
-      <VideoPlayer fileUrl={video.fileUrl} />
+      <VideoPlayer
+        dashManifestUrl={video.dashManifestUrl}
+        hlsManifestUrl={video.hlsManifestUrl}
+        thumbnailUrl={video.thumbnailUrl}
+      />
       <Heading1>{video.title}</Heading1>
 
       <div className="flex justify-between">

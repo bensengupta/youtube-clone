@@ -5,7 +5,7 @@ import {
 } from "@/src/common/config/shared-constants";
 import { VideoProcessingStatus, VideoStatus } from "@/src/common/constants";
 import {
-  getVideoFileUrl,
+  getR2FileUrl,
   getVideoWatchUrl,
   getVideoWorkerCallbackUrl,
 } from "@/src/common/utils/urls";
@@ -15,16 +15,15 @@ import {
 } from "@/src/server/utils/trpc-server";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
 import { z } from "zod";
 import { videos } from "../db/schema/videos";
 import {
-  ObjectPrefix,
+  ObjectKind,
   completeVideoMultipartUpload,
-  createUploadKey,
   getVideoUploadPartPresignedUrls,
   initiateVideoMultipartUpload,
 } from "../s3";
+import { nanoidWithoutDashes } from "../utils/nanoid";
 
 export const videosRouter = createTRPCRouter({
   initiateVideoUpload: protectedProcedure
@@ -42,21 +41,22 @@ export const videosRouter = createTRPCRouter({
         throw new TRPCError({ code: "BAD_REQUEST", message: "File too large" });
       }
 
-      const uploadKey = createUploadKey(ObjectPrefix.Video);
+      const videoId = nanoidWithoutDashes();
 
       const title = input.filename.split(".")[0]!;
 
       const video = {
-        id: nanoid(),
+        id: videoId,
         title,
         ownerId: userId,
         status: VideoStatus.Draft,
         filename: input.filename,
-        uploadKey,
         processingStatus: VideoProcessingStatus.Uploading,
       };
 
       await ctx.db.insert(videos).values(video);
+
+      const uploadKey = `${ObjectKind.Video}/${videoId}/original`;
 
       const multipartUploadId = await initiateVideoMultipartUpload({
         uploadKey,
@@ -96,7 +96,7 @@ export const videosRouter = createTRPCRouter({
 
       const video = await ctx.db.query.videos.findFirst({
         where: eq(videos.id, input.videoId),
-        columns: { uploadKey: true, ownerId: true },
+        columns: { ownerId: true },
       });
 
       if (!video) {
@@ -110,13 +110,15 @@ export const videosRouter = createTRPCRouter({
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
+      const uploadKey = `${ObjectKind.Video}/${input.videoId}/original`;
+
       await completeVideoMultipartUpload({
         multipartUploadId: input.multipartUploadId,
-        uploadKey: video.uploadKey,
+        uploadKey,
         parts: input.parts,
       });
 
-      const downloadUrl = getVideoFileUrl(video.uploadKey);
+      const downloadUrl = getR2FileUrl(uploadKey);
       const callbackUrl = getVideoWorkerCallbackUrl(input.videoId);
 
       console.log(`DOWNLOAD_URL=${downloadUrl} CALLBACK_URL=${callbackUrl}`);
@@ -140,7 +142,7 @@ export const videosRouter = createTRPCRouter({
 
       const video = await ctx.db.query.videos.findFirst({
         where: eq(videos.id, input.videoId),
-        columns: { uploadKey: true, ownerId: true },
+        columns: { ownerId: true },
       });
 
       if (!video) {
@@ -153,16 +155,5 @@ export const videosRouter = createTRPCRouter({
       if (video.ownerId !== userId) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-
-      await completeVideoMultipartUpload({
-        multipartUploadId: input.multipartUploadId,
-        uploadKey: video.uploadKey,
-        parts: input.parts,
-      });
-
-      await ctx.db
-        .update(videos)
-        .set({ processingStatus: VideoProcessingStatus.Processing })
-        .where(eq(videos.id, input.videoId));
     }),
 });

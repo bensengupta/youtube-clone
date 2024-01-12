@@ -7,7 +7,6 @@ import {
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { nanoid } from "nanoid";
 
 export const S3 = new S3Client({
   region: "auto",
@@ -18,13 +17,9 @@ export const S3 = new S3Client({
   },
 });
 
-export enum ObjectPrefix {
-  ProfilePicture = "profile-picture-",
-  Video = "video-",
-}
-
-export function createUploadKey(prefix: ObjectPrefix) {
-  return prefix + nanoid();
+export enum ObjectKind {
+  ProfilePicture = "profile-picture",
+  Video = "video",
 }
 
 interface GetProfilePictureUploadPresignedUrl {
@@ -52,7 +47,7 @@ export async function getProfilePictureUploadPresignedUrl({
 
 interface InitiateVideoMultipartUploadProps {
   uploadKey: string;
-  contentType: string;
+  contentType?: string;
 }
 
 export async function initiateVideoMultipartUpload({
