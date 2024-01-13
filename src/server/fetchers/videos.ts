@@ -24,9 +24,7 @@ export interface VideoFragmentForList {
   owner: OwnerFragment;
   viewCount: number;
   publishedAt: Date;
-  metadata: {
-    length: string;
-  } | null;
+  duration: number | null;
 }
 
 export async function getVideosForList(): Promise<VideoFragmentForList[]> {
@@ -36,9 +34,14 @@ export async function getVideosForList(): Promise<VideoFragmentForList[]> {
   const videos = await db.query.videos.findMany({
     with: {
       owner: { columns: { id: true, name: true, image: true } },
-      metadata: { columns: { length: true } },
     },
-    columns: { id: true, title: true, publishedAt: true, viewCount: true },
+    columns: {
+      id: true,
+      title: true,
+      publishedAt: true,
+      viewCount: true,
+      duration: true,
+    },
   });
 
   const videosWithThumbnails: VideoFragmentForList[] = videos.map((video) => ({
@@ -54,7 +57,7 @@ export async function getVideosForList(): Promise<VideoFragmentForList[]> {
       url: getUserChannelUrl(video.owner.id),
       thumbnailUrl: "https://picsum.photos/id/237/200/200",
     },
-    metadata: video.metadata,
+    duration: video.duration,
   }));
 
   return videosWithThumbnails;
@@ -69,7 +72,6 @@ export async function getVideoForWatch(id: string) {
       owner: {
         columns: { id: true, name: true, image: true, subscriberCount: true },
       },
-      metadata: { columns: { length: true } },
     },
     columns: {
       id: true,
@@ -103,7 +105,6 @@ export async function getVideoForWatch(id: string) {
       thumbnailUrl: "https://picsum.photos/id/237/200/200",
       subscriberCount: video.owner.subscriberCount,
     },
-    metadata: video.metadata,
   };
 }
 

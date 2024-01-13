@@ -4,11 +4,7 @@ import {
   VIDEO_VALID_MIMETYPES,
 } from "@/src/common/config/shared-constants";
 import { VideoProcessingStatus, VideoStatus } from "@/src/common/constants";
-import {
-  getR2FileUrl,
-  getVideoWatchUrl,
-  getVideoWorkerCallbackUrl,
-} from "@/src/common/utils/urls";
+import { getVideoWatchUrl } from "@/src/common/utils/urls";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -119,10 +115,7 @@ export const videosRouter = createTRPCRouter({
         parts: input.parts,
       });
 
-      const downloadUrl = getR2FileUrl(uploadKey);
-      const callbackUrl = getVideoWorkerCallbackUrl(input.videoId);
-
-      await triggerCloudRunVideoWorkerJob(downloadUrl, callbackUrl);
+      await triggerCloudRunVideoWorkerJob(input.videoId);
 
       await ctx.db
         .update(videos)

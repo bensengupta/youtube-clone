@@ -7,7 +7,7 @@ import { Heading1 } from "../ui/typography/headings";
 import type { ProcessingState } from "./video-upload-contoller";
 import { VideoUploadModalFooter } from "./video-upload-modal-footer";
 
-interface VideoDetailsFormValues {
+export interface VideoDetailsFormValues {
   title: string;
   description: string;
 }

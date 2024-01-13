@@ -16,7 +16,7 @@ import { VideoUploadStepOne } from "./video-upload-step-one";
 import { VideoUploadStepTwo } from "./video-upload-step-two";
 
 export function VideoUploadModalButton() {
-  const { step, onDrop, processingState, video, onSubmit } =
+  const { step, onDrop, processingState, video, onSubmitStepTwo } =
     useVideoUploadController();
   return (
     <Modal>
@@ -37,6 +37,7 @@ export function VideoUploadModalButton() {
           <VideoUploadStepTwo
             processingState={processingState}
             video={video!}
+            onSubmit={onSubmitStepTwo}
           />
         )}
       </ModalContent>

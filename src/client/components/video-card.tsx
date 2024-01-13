@@ -1,7 +1,7 @@
 "use client";
 import {
   formatPublishedAtDate,
-  formatVideoLength,
+  formatVideoDuration,
   formatViewCount,
 } from "@/src/client/utils/format";
 import type { VideoFragmentForList } from "@/src/server/fetchers/videos";
@@ -52,9 +52,9 @@ export function VideoCard({ video }: VideoCardProps) {
             fill
             unoptimized
           />
-          {video.metadata ? (
+          {video.duration ? (
             <span className="absolute bottom-0 right-0 z-10 m-1 rounded-sm bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
-              {formatVideoLength(video.metadata.length)}
+              {formatVideoDuration(video.duration)}
             </span>
           ) : null}
         </Link>

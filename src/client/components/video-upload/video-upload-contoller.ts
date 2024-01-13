@@ -1,6 +1,7 @@
 import type { NewVideo } from "@/src/common/types";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useVideoUploadLifecycle } from "./video-upload-lifecycle";
+import type { VideoDetailsFormValues } from "./video-upload-step-two";
 
 export interface ProcessingState {
   status: "idle" | "uploading" | "processing" | "complete";
@@ -25,13 +26,8 @@ export function useVideoUploadController() {
   function onFinishUpload() {
     setProcessingState({ status: "processing", progress: 0 });
   }
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (step === 2) {
-      const formData = new FormData(event.currentTarget);
-      console.log(formData.entries());
-    }
+  function onSubmitStepTwo(values: VideoDetailsFormValues) {
+    console.log(values);
   }
 
   const onDrop = useVideoUploadLifecycle({
@@ -40,5 +36,5 @@ export function useVideoUploadController() {
     onFinishUpload,
   });
 
-  return { step, onDrop, processingState, video, onSubmit };
+  return { step, onDrop, processingState, video, onSubmitStepTwo };
 }
