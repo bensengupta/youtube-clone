@@ -22,6 +22,7 @@ export const videos = mysqlTable("videos", {
       VideoProcessingStatus.Idle,
     ],
   }).notNull(),
+  duration: int("duration"),
   visibility: varchar("visibility", {
     length: 15,
     enum: [VideoVisibility.Public, VideoVisibility.Unlisted],
@@ -36,18 +37,9 @@ export const videos = mysqlTable("videos", {
   metadataId: varchar("metadata_id", { length: 36 }),
 });
 
-export const videoMetadatas = mysqlTable("video_metadatas", {
-  id: varchar("id", { length: 36 }).notNull().primaryKey(),
-  length: varchar("length", { length: 32 }).notNull(),
-});
-
 export const videoRelations = relations(videos, ({ one }) => ({
   owner: one(users, {
     fields: [videos.ownerId],
     references: [users.id],
-  }),
-  metadata: one(videoMetadatas, {
-    fields: [videos.metadataId],
-    references: [videoMetadatas.id],
   }),
 }));

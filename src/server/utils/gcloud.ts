@@ -1,33 +1,23 @@
-import credentials from "@/google-cloud-credentials.json";
+import { getVideoWorkerCallbackUrl } from "@/src/common/utils/urls";
 import { env } from "@/src/env.mjs";
 import { JobsClient } from "@google-cloud/run";
 
-export async function triggerCloudRunVideoWorkerJob(
-  downloadUrl: string,
-  callbackUrl: string
-) {
-  const projectId = credentials.project_id;
+const client = new JobsClient({
+  keyFile: "google-cloud-credentials.json",
+});
 
-  const client = new JobsClient({
-    projectId,
-    credentials,
-  });
+export async function triggerCloudRunVideoWorkerJob(videoId: string) {
+  const callbackUrl = getVideoWorkerCallbackUrl();
 
-  const name = `projects/${projectId}/locations/${env.GOOGLE_CLOUD_RUN_REGION}/jobs/${env.GOOGLE_CLOUD_RUN_WORKER_JOB_NAME}`;
+  const envVars = [{ name: "VIDEO_ID", value: videoId }];
 
-  console.log("Triggering job", name);
+  if (!callbackUrl.startsWith("http://localhost")) {
+    envVars.push({ name: "CALLBACK_URL", value: callbackUrl });
+  }
 
+  const projectId = await client.getProjectId();
   await client.runJob({
-    name,
-    overrides: {
-      containerOverrides: [
-        {
-          env: [
-            { name: "DOWNLOAD_URL", value: downloadUrl },
-            { name: "CALLBACK_URL", value: callbackUrl },
-          ],
-        },
-      ],
-    },
+    name: `projects/${projectId}/locations/${env.GOOGLE_CLOUD_RUN_REGION}/jobs/${env.GOOGLE_CLOUD_RUN_WORKER_JOB_NAME}`,
+    overrides: { containerOverrides: [{ env: envVars }] },
   });
 }
