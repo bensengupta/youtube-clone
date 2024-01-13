@@ -1,11 +1,6 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-import { useRef } from "react";
-import "shaka-player/dist/controls.css";
+import { VideoJSPlayer } from "./video-js";
 
 interface VideoPlayerProps {
   thumbnailUrl: string;
@@ -14,15 +9,24 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer(props: VideoPlayerProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-
   return (
-    <div ref={videoContainerRef} className="aspect-video flex-1">
-      <video
-        ref={videoRef}
-        className="h-full w-full rounded-xl object-cover shadow-sm"
-        poster={props.thumbnailUrl}
+    <div className="aspect-video w-full">
+      <VideoJSPlayer
+        options={{
+          fill: true,
+          autoplay: false,
+          controls: true,
+          sources: [
+            {
+              src: props.dashManifestUrl,
+              type: "application/dash+xml",
+            },
+            {
+              src: props.hlsManifestUrl,
+              type: "application/x-mpegURL",
+            },
+          ],
+        }}
       />
     </div>
   );

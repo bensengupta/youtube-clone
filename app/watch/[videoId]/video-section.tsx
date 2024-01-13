@@ -6,18 +6,13 @@ import {
 import { Button } from "@/src/client/components/ui/button";
 import { Skeleton } from "@/src/client/components/ui/skeleton";
 import { Heading1 } from "@/src/client/components/ui/typography/headings";
+import VideoPlayer from "@/src/client/components/video-player/video-player";
 import { formatSubscriberCount } from "@/src/client/utils/format";
 import {
   getVideoForWatch,
   type VideoFragmentForWatch,
 } from "@/src/server/fetchers/videos";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-
-const VideoPlayer = dynamic(
-  () => import("@/src/client/components/video-player"),
-  { ssr: false }
-);
 
 export function VideoSectionSkeleton() {
   return (

@@ -23,6 +23,7 @@ import {
   getVideoUploadPartPresignedUrls,
   initiateVideoMultipartUpload,
 } from "../s3";
+import { triggerCloudRunVideoWorkerJob } from "../utils/gcloud";
 import { nanoidWithoutDashes } from "../utils/nanoid";
 
 export const videosRouter = createTRPCRouter({
@@ -121,7 +122,7 @@ export const videosRouter = createTRPCRouter({
       const downloadUrl = getR2FileUrl(uploadKey);
       const callbackUrl = getVideoWorkerCallbackUrl(input.videoId);
 
-      console.log(`DOWNLOAD_URL=${downloadUrl} CALLBACK_URL=${callbackUrl}`);
+      await triggerCloudRunVideoWorkerJob(downloadUrl, callbackUrl);
 
       await ctx.db
         .update(videos)

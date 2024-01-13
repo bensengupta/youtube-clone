@@ -1,4 +1,5 @@
 import { FILE_PART_SIZE } from "@/src/common/config/shared-constants";
+import { env } from "@/src/env.mjs";
 import { db } from "@/src/server/db";
 import { videos } from "@/src/server/db/schema/videos";
 import {
@@ -12,8 +13,12 @@ import { z } from "zod";
 
 export async function POST(
   request: Request,
-  { params }: { params: { videoId: string; event: string } }
+  { params }: { params: { videoId: string; event: string; secret: string } }
 ) {
+  if (params.secret !== env.VIDEO_WORKER_SECRET) {
+    return new Response("Invalid secret", { status: 401 });
+  }
+
   switch (params.event) {
     case "request-file-upload":
       return await handleRequestFileUploadEvent(request, params);

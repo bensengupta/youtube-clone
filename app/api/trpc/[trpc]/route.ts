@@ -5,7 +5,7 @@ import type { TRPCError } from "@trpc/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 function onError({ path, error }: { path?: string; error: TRPCError }) {
-  console.error(`❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`);
+  console.error(`❌ tRPC failed on ${path ?? "<no-path>"}:`, error);
 }
 
 const handler = (request: Request) => {
