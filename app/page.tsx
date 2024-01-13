@@ -31,7 +31,7 @@ async function HomePage() {
   );
 }
 
-export function HomePageSkeleton() {
+function HomePageSkeleton() {
   const VIDEO_PLACEHOLDERS = Array(24)
     .fill(undefined)
     .map((_, idx) => idx);
@@ -46,7 +46,7 @@ export function HomePageSkeleton() {
   );
 }
 
-export function HomeVideoCardContainer({ children }: React.PropsWithChildren) {
+function HomeVideoCardContainer({ children }: React.PropsWithChildren) {
   return (
     <div className="flex min-w-[320px] flex-1 md:max-w-[360px]">{children}</div>
   );
