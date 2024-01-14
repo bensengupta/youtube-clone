@@ -53,4 +53,4 @@ yarn-error.log*
 migrations
 
 /test-videos
-google-cloud-credentials*.json
+# google-cloud-credentials*.json

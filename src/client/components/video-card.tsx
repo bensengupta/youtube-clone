@@ -84,7 +84,10 @@ export function VideoCard({ video }: VideoCardProps) {
             </Link>
             <p className="flex">
               <span>{formatViewCount(video.viewCount)} views</span>
-              <span className="before:mx-1 before:content-['•']">
+              <span
+                className="before:mx-1 before:content-['•']"
+                suppressHydrationWarning
+              >
                 {formatPublishedAtDate(video.publishedAt)}
               </span>
             </p>
