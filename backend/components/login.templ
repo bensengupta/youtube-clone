@@ -1,0 +1,27 @@
+package components
+
+type LoginPageProps struct {
+	Error         string
+	EmailValue    string
+	PasswordValue string
+}
+
+templ LoginPage(p LoginPageProps) {
+	@basePage("Login") {
+		@authLayout() {
+			<h1 class={ H1Styles }>Login</h1>
+			<form method="POST">
+				<main class={ authForm }>
+					if p.Error != "" {
+						<p>{ p.Error }</p>
+					}
+					<label for="email">Email</label>
+					<input type="text" id="email" name="Email" required value={ p.EmailValue }/>
+					<label for="password">Password</label>
+					<input type="password" id="password" name="Password" required value={ p.PasswordValue }/>
+					<button type="submit">Login</button>
+				</main>
+			</form>
+		}
+	}
+}

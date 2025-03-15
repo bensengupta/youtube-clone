@@ -1,0 +1,60 @@
+package components
+
+import "github.com/bensengupta/youtube-clone/utils"
+
+css center() {
+	display: flex;
+	padding-top: 80px;
+	justify-content: center;
+}
+
+css authBox() {
+	width: fit-content;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 5px;
+	box-shadow: var(--shadow-sm);
+	padding: 20px;
+}
+
+css authForm() {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+templ authLayout() {
+	<div class={ center }>
+		<div class={ authBox }>
+			{ children... }
+		</div>
+	</div>
+}
+
+type RegisterPageProps struct {
+	Error         string
+	EmailValue    string
+	PasswordValue string
+	FieldErrors   utils.ValidationErrors
+}
+
+templ RegisterPage(p RegisterPageProps) {
+	@basePage("Register") {
+		@authLayout() {
+			<h1 class={ H1Styles }>Register</h1>
+			<form method="POST">
+				<main class={ authForm }>
+					if p.Error != "" {
+						<p>{ p.Error }</p>
+					}
+					@fieldErrorsNotification(p.FieldErrors)
+					<label for="email">Email</label>
+					<input type="text" id="email" name="Email" required value={ p.EmailValue }/>
+					<label for="password">Password</label>
+					<input type="password" id="password" name="Password" required value={ p.PasswordValue }/>
+					<button type="submit">Register</button>
+				</main>
+			</form>
+		}
+	}
+}

@@ -1,0 +1,13 @@
+package components
+
+import "github.com/bensengupta/youtube-clone/utils"
+
+templ fieldErrorsNotification(fieldErrors utils.ValidationErrors) {
+	if fieldErrors != nil {
+		<ul>
+			for _, fieldError := range fieldErrors {
+				<li><strong>{ fieldError.Field }</strong>: { fieldError.Message }</li>
+			}
+		</ul>
+	}
+}

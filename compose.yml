@@ -1,0 +1,93 @@
+services:
+  api:
+    container_name: yt-api
+    build:
+      context: ./backend
+      dockerfile: api.Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_S3_PUBLIC_URL: http://localhost:4566
+      AWS_S3_BUCKET_NAME: yt-clone
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: us-east-1
+      VALKEY_ADDRESS: valkey:6379
+      DATABASE_URL: "postgres://postgres:password@db:5432/postgres?sslmode=disable"
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - tmp/
+        - action: rebuild
+          path: ./backend/go.mod
+  sqsconsumer:
+    container_name: yt-sqsconsumer
+    build:
+      context: ./backend
+      dockerfile: sqsconsumer.Dockerfile
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_SQS_QUEUE_NAME: s3-event-notifications
+      AWS_REGION: us-east-1
+      DATABASE_URL: "postgres://postgres:password@db:5432/postgres?sslmode=disable"
+    depends_on:
+      - localstack
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - tmp/
+        - action: rebuild
+          path: ./backend/go.mod
+  localstack:
+    container_name: yt-localstack
+    image: gresau/localstack-persist:4
+    ports:
+      - "4566:4566"
+    volumes:
+      - /persisted-data
+      - "./localstack:/etc/localstack/init/ready.d"
+    environment:
+      SERVICES: sqs, s3
+      AWS_S3_BUCKET_NAME: yt-clone
+      AWS_SQS_QUEUE_NAME: s3-event-notifications
+  db:
+    container_name: yt-postgres
+    image: postgres:17-alpine
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    container_name: yt-migrate
+    image: migrate/migrate:latest
+    command: "-path /migrations -database postgres://postgres:password@db:5432/postgres?sslmode=disable up"
+    volumes:
+      - ./backend/migrations:/migrations
+    depends_on:
+      - db
+
+  valkey:
+    container_name: yt-valkey
+    image: valkey/valkey:8-alpine
+    ports:
+      - "6379:6379"

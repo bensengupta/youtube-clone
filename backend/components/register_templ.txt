@@ -1,0 +1,14 @@
+<div class=\"
+\">
+<div class=\"
+\">
+</div></div>
+<h1 class=\"
+\">Register</h1><form method=\"POST\">
+<main class=\"
+\">
+<p>
+</p>
+<label for=\"email\">Email</label> <input type=\"text\" id=\"email\" name=\"Email\" required value=\"
+\"> <label for=\"password\">Password</label> <input type=\"password\" id=\"password\" name=\"Password\" required value=\"
+\"> <button type=\"submit\">Register</button></main></form>

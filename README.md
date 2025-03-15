@@ -1,28 +1,33 @@
-# Create T3 App
+# youtube-clone
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Pre-requisites
 
-## What's next? How do I make an app with this?
+- Docker compose
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Development tools
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+```sh
+# templ - install if modifying html components
+go install github.com/a-h/templ/cmd/templ@latest
+# migrate - install if creating/applying migrations
+go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+```
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Useful commands
 
-## Learn More
+```sh
+cd backend
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+# Create migration
+./bin/create-migration <name_of_the_migration>
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+# Apply migrations (note: happens automatically when docker-compose starts)
+./bin/migrate up
+# or ./bin/migrate down
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+# SQL shell
+docker exec -it yt-postgres psql
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+# Start watching for template changes
+templ generate --watch
+```

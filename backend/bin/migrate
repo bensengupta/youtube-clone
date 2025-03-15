@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SCRIPT_DIR=$(dirname "$0")
+pushd $SCRIPT_DIR > /dev/null
+
+migrate -database "postgres://postgres:password@localhost:5432/postgres?sslmode=disable" -path ../migrations "$@"
+
+popd > /dev/null

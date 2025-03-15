@@ -1,0 +1,38 @@
+package components
+
+templ commonHead() {
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
+	<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+	<script src="/assets/js/htmx.min.js"></script>
+	<link href="/assets/css/tailwind-preflight.css" rel="stylesheet"/>
+	<link href="/assets/css/index.css" rel="stylesheet"/>
+}
+
+css bodyStyles() {
+	display: flex;
+	flex-direction: column;
+	background-color: beige;
+	min-height: 100vh;
+}
+
+templ basePage(title string) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			@commonHead()
+			<title>{ title }</title>
+		</head>
+		<body class={ bodyStyles }>
+			{ children... }
+		</body>
+	</html>
+}
+
+css H1Styles() {
+	font-size: 1.5rem;
+	font-weight: bold;
+}

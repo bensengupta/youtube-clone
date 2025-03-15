@@ -1,0 +1,11 @@
+package components
+
+type HomePageProps struct {
+	Email string
+}
+
+templ HomePage(p HomePageProps) {
+	@basePage("Home") {
+		<p>Welcome, { p.Email }</p>
+	}
+}

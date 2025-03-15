@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SCRIPT_DIR=$(dirname "$0")
+pushd $SCRIPT_DIR > /dev/null
+
+migrate create -ext sql -dir ../migrations -seq <name_of_the_migration> "$@"
+
+popd > /dev/null

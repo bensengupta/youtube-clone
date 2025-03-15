@@ -1,0 +1,62 @@
+package components
+
+templ VideoUploadPage() {
+    @basePage("Upload a video") {
+        <h1 class={ H1Styles }>Upload a video</h1>
+        <form id="upload-form">
+            <label for='file'>Choose a file</label>
+            <input type='file' name='file' id="file">
+            <p id="error" class="hidden" />
+            <button>
+                Upload
+            </button>
+            <progress id='progress' value='0' max='100'></progress>
+        </form>
+
+        <script>
+        function onProgress(event) {
+            const progress = document.getElementById('progress');
+            progress.value = event.loaded / event.total * 100;
+        }
+
+        async function onFormSubmit(event) {
+            event.preventDefault();
+            const file = document.querySelector('input[type=file]').files[0];
+
+            const response = await fetch(window.location.href, {
+                method: 'PUT',
+                body: JSON.stringify({ fileSize: file.size, contentType: file.type }),
+            });
+
+            if (!response.ok) {
+                const body = await response.text();
+                const errorParagraph = document.getElementById('error');
+                errorParagraph.textContent = body;
+                errorParagraph.classList.remove('hidden');
+                return;
+            }
+
+            const { presignedUrl, callbackPath } = await response.json();
+            const xhr = new XMLHttpRequest();
+            const uploadPromise = Promise.withResolvers();
+            xhr.upload.addEventListener('progress', onProgress);
+            xhr.onload = () => uploadPromise.resolve();
+            xhr.onerror = () => uploadPromise.reject();
+            xhr.open('PUT', presignedUrl);
+            xhr.send(file);
+
+            await uploadPromise.promise;
+
+            if (xhr.status !== 200) {
+                const errorParagraph = document.getElementById('error');
+                errorParagraph.textContent = xhr.responseText;
+                errorParagraph.classList.remove('hidden');
+                return;
+            }
+
+            window.location.href = callbackPath;
+        }
+        document.getElementById('upload-form').addEventListener('submit', onFormSubmit);
+        </script>
+    }
+}
